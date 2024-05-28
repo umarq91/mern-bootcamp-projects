@@ -74,3 +74,5 @@ export const getPersonalEvents = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+// will see if more needed

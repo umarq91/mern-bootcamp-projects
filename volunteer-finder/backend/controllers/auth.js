@@ -3,25 +3,39 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { customError } from "../utils/CustomError.js";
 let salt = bcrypt.genSaltSync(10);
-export const createUser =async(req,res)=>{
-    const {name,email,password}=req.body
-try {
-    
-    let hashedpassword = bcrypt.hashSync(password, salt);
-    const data= await UserModel.create({...req.body,password:hashedpassword})
+export const createUser = async (req, res, next) => {
+  const { username, password, email } = req.body;
 
-res.json({success:true,data}).status(200)
-} catch (error) {
-    console.log(error);
-}
-}
+  try {
+    // check if username already exists
+    let existingUser = await UserModel.find({ email })
+    
+    if (existingUser.length>0) {
+      // If the email already exists, return an error response to the frontend
+      return next(customError(404, 'Email already exists'));
+    }
+
+    let hashedpassword = bcrypt.hashSync(password, salt);
+
+    const user = await UserModel.create({
+      username,
+      email,
+      password: hashedpassword,
+    });
+
+    const { password: userPassword, ...rest } = user._doc;
+    res.json({ success: "true", user:rest });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 export const signIn = async (req, res, next) => {
 
     let { email, password } = req.body;
     try {
-        console.log(email,password);
+  
       let validUser = await UserModel.findOne({ email });
       // TODO : error Handling
       if (!validUser) return next(customError(400, "User not Found"));

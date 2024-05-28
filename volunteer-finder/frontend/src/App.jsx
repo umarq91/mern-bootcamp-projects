@@ -9,6 +9,8 @@ import HomePage from './pages/HomePage'
 import axios from "axios"
 import {  AuthProvider } from './context/authContext'
 import ProfilePosts from './pages/ProfilePosts'
+import Navbar from './components/layout/Navbar'
+import ProfilePage from './pages/ProfilePage'
 
 
 axios.defaults.withCredentials=true
@@ -17,17 +19,18 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
-      
     <AuthProvider>
+      <BrowserRouter>
+          <Navbar/>
+      
         <Routes>
         <Route path='/' element={<HomePage/>} />
         <Route path='/sign-in' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SignUp/>} />
-        <Route path='/profile'element={<ProfilePosts/>}/>
+        <Route path='/profile'element={<ProfilePage/>}/>
         </Routes>
-    </AuthProvider>
       </BrowserRouter>
+    </AuthProvider>
     </div>
   )
 }

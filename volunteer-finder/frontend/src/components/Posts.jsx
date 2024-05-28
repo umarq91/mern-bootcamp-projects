@@ -17,7 +17,7 @@ const [loading,setLoading]=useState(true)
   },[])
 
   return (
-    <div className='mx-auto'>
+    <div className='mx-auto max-w-7xl  bg-red-400'>
         {loading && <p>Loading...</p>}
         <div className='grid grid-cols-1 md:grid-cols-2  gap-4'>
 

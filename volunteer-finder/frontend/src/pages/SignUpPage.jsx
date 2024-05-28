@@ -4,18 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import { signUp } from "../features/auth/authSlice"; // Adjust the import path as needed
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 // Define the validation schema using zod
 const schema = z.object({
   name: z.string().min(5, "Username is required"),
   email: z.string().email("Invalid email address").nonempty("Email is required"),
-  password: z.string().min(4, "Password must be at least 6 characters long"),
+  password: z.string().min(4, "Password must be at least 4 characters long"),
 });
 
 const SignUp = () => {
   // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,11 +27,9 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     try {
       let res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-up`, { name:data.name, email:data.email, password:data.password });
-
-        if (res.status == 200) {
-        toast.success("Account created successfully", {
-          position: "bottom-left",
-        });
+      if (res.status == 200) {
+          console.log(res);
+        toast.success("Account created successfully");
         navigate("/sign-in");
       }
     } catch (error) {

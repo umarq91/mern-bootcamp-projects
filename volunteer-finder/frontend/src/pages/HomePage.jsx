@@ -10,7 +10,7 @@ function HomePage() {
 
 
   return (
-    <div className='bg-gray-200 h-full'>
+    <div className='bg-gray-200 h-full '>
       <Posts/>
     </div>
   )

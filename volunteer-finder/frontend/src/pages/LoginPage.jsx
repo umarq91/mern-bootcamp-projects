@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -15,11 +16,12 @@ function LoginPage() {
         try {
             setLoading(true)
             const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-in`, data)
-            console.log(res);
             if (res.status === 200) {
                 // dispatch(login(res.data))
                 setLoading(false)
-                navigate('/')
+                toast.success('Login successful')
+                
+                window.location.href='/';
             }
         } catch (error) {
             setLoading(false)
@@ -76,10 +78,7 @@ function LoginPage() {
                                     autoComplete="current-password"
                                     {...register('password', {
                                         required: 'Password is required',
-                                        minLength: {
-                                            value: 6,
-                                            message: 'Password must be at least 6 characters long'
-                                        }
+                                    
                                     })}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />

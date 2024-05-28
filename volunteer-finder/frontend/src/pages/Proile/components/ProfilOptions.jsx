@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useAuth } from '../../../context/authContext';
 
 export const ProfileOption = () => {
-  const { user } = useAuth();
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { user,getting } = useAuth();
+ 
+ 
+
+  const { register, handleSubmit,  formState: { errors } } = useForm({
     defaultValues: {
-      name: user.name,
-      email: user.email,
+      name: user?.name || "",
+      email: user?.email || "",
       password: '',
-      profile: user.profile || ''
+      profile: user?.profile || ''
     }
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  if(getting){
+    return <div>Loading...</div>
+  }
 
-//   useEffect(() => {
-//     setValue('name', user.name);
-//     setValue('email', user.email);
-//     setValue('profile', user.profile);
-//   }, [user, setValue]);
 
   const handleUpdate = async (formData) => {
     setLoading(true);

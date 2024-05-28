@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PostsOption from './components/PostsOption';
 import { ProfileOption } from './components/ProfilOptions';
 import axios from 'axios';
@@ -91,7 +91,7 @@ const options = ['My Profile', 'My Posts', 'Sochenge'];
           <ul className="space-y-2 font-medium">
             {/* Replace with your actual sidebar links */}
          {options.map((option) => (
-                <li>
+                <li key={option}>
                 <a
                 href="#"
                 onClick={() => handleOptionClick(option)}

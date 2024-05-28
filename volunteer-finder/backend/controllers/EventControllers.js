@@ -1,4 +1,5 @@
 import { EventModel } from "../models/EventModel.js";
+import { customError } from "../utils/CustomError.js";
 
 // CRUD on Events 
 
@@ -61,13 +62,10 @@ export const getEvents = async (req, res) => {
 export const getPersonalEvents = async (req, res) => {
     try {
            let events;
-        if (req.user.isAdmin) {
-            // Admins can get all events
-            events = await EventModel.find({approval:'pending'});
-        } else {
+
             // Organizations can only get their own events
             events = await EventModel.find({Organizer:req.user._id });
-        }
+       
         res.json(events);
     } catch (error) {
         console.log(error);
@@ -75,3 +73,20 @@ export const getPersonalEvents = async (req, res) => {
     }
 }
 
+
+// get Events for Admin
+export const getPostsForAdmin = async (req, res,next) => {
+    try {
+
+    if (req.user.isAdmin) {
+        // Admins can get all events
+        events = await EventModel.find({approval:'pending'});
+    }else{
+        return next(customError(403,"You don't have permission to modify this resource!"))
+    }
+            
+} catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+}   
+}

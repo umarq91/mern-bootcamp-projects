@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [getting, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch user data from the backend API
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, getting }}>
       {children}
     </AuthContext.Provider>
   );

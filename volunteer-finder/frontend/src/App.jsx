@@ -10,8 +10,7 @@ import axios from "axios"
 import {  AuthProvider } from './context/authContext'
 import ProfilePosts from './pages/ProfilePosts'
 import Navbar from './components/layout/Navbar'
-import ProfilePage from './pages/ProfilePage'
-
+import ProfilePage from "./pages/Proile/ProfilePage"
 
 axios.defaults.withCredentials=true
 function App() {

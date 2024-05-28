@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PostsOption from './components/PostsOption';
+import { ProfileOption } from './components/ProfilOptions';
+import axios from 'axios';
+
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
-  const [selectedOption, setSelectedOption] = useState('Dashboard');
-const options = ['Dashboard', 'Kanban', 'Main'];
+  const [selectedOption, setSelectedOption] = useState('My Profile');
+const options = ['My Profile', 'My Posts', 'Sochenge'];
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (
@@ -31,12 +36,19 @@ const options = ['Dashboard', 'Kanban', 'Main'];
     setSelectedOption(option);
     setSidebarOpen(false); // Close the sidebar on mobile after selecting an option
   };
+  
+  const handleLogout =async () => {
+   const res = await  axios.get(`${import.meta.env.VITE_BACKEND}/auth/logout`);
+    if(res.status==200){
+      window.location.reload();
+    }
+  }
   const renderContent = () => {
     switch (selectedOption) {
-      case 'Dashboard':
-        return <p>Dashboard content goes here...</p>;
-      case 'Kanban':
-        return <p>Kanban content goes here...</p>;
+      case 'My Profile':
+        return <ProfileOption/>;
+      case 'My Posts':
+        return <PostsOption/>;
       default:
         return <p>Main content goes here...</p>;
     }
@@ -68,7 +80,7 @@ const options = ['Dashboard', 'Kanban', 'Main'];
       <aside
       ref={sidebarRef}
         id="default-sidebar"
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+        className={`fixed  top-12 left-0 z-40 w-64 h-screen transition-transform ${
           sidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
         }`}
         aria-label="Sidebar"
@@ -93,6 +105,15 @@ const options = ['Dashboard', 'Kanban', 'Main'];
               </a>
               </li>
          ))}
+         <li>
+                <a
+                href="#"
+                className={`flex items-center p-2 rounded-lg group text-center bg-red-700 text-white`}
+              >
+             
+                <span onClick={handleLogout} className="ms-3 text-center"> Sign Out </span>
+              </a>
+              </li>
            
             {/* Add more sidebar links as needed */}
           </ul>
@@ -104,7 +125,7 @@ const options = ['Dashboard', 'Kanban', 'Main'];
         {/* Replace with your main content */}
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           {/* Replace with your actual content */}
-          <p>Main content goes here...</p>
+          {renderContent()}
         </div>
       </div>
     </>

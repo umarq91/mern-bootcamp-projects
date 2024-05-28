@@ -26,7 +26,7 @@ app.listen(5000, () => console.log("server running on port 5000"))
 
 
 app.use('/api/v1/auth',authRoutes);
-app.use('/api/v1/event',eventRoutes);
+app.use('/api/v1/events',eventRoutes);
 
 
 app.use((err,req,res,next)=>{

@@ -25,21 +25,21 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
-    // const { name, email, password } = data;
-    // try {
-    //   let res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-up`, { name, email, password });
-    //   if (res.status === 200) {
-    //     toast.success("Account created successfully", {
-    //       position: "bottom-left",
-    //     });
-    //     navigate("/sign-in");
-    //   }
-    // } catch (error) {
-    //   console.error(error.response.data.message);
-    //   toast.error("Error creating account", {
-    //     position: "bottom-left",
-    //   });
-    // }
+    try {
+      let res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-up`, { name:data.name, email:data.email, password:data.password });
+
+        if (res.status == 200) {
+        toast.success("Account created successfully", {
+          position: "bottom-left",
+        });
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      // console.error(error.response.data.message);
+      toast.error("Error creating account", {
+        position: "bottom-left",
+      });
+    }
   };
 
   return (

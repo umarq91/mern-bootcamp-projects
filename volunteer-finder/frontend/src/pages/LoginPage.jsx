@@ -12,19 +12,20 @@ function LoginPage() {
     // const userInfo = useSelector((state) => state.auth.userInfo)
 
     const handleLogin = async (data) => {
-        // try {
-        //     setLoading(true)
-        //     const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-in`, data)
-        //     if (res.status === 200) {
-        //         dispatch(login(res.data))
-        //         setLoading(false)
-        //         navigate('/')
-        //     }
-        // } catch (error) {
-        //     setLoading(false)
-        //     console.log(error.response.data.message)
-        //     setError(error.response.data.message)
-        // }
+        try {
+            setLoading(true)
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-in`, data)
+            console.log(res);
+            if (res.status === 200) {
+                // dispatch(login(res.data))
+                setLoading(false)
+                navigate('/')
+            }
+        } catch (error) {
+            setLoading(false)
+            console.log(error.response.data.message)
+            setError(error.response.data.message)
+        }
     }
 
     return (

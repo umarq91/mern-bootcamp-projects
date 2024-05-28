@@ -49,18 +49,28 @@ export const updateEvent = async (req, res) => {
 
 export const getEvents = async (req, res) => {
     try {
-        // let events;
-        // if (req.user.isAdmin) {
-        //     // Admins can get all events
-        //     events = await EventModel.find({});
-        // } else {
-        //     // Organizations can only get their own events
-        //     events = await EventModel.find({ Organizer: req.user._id });
-        // }
-        const events = await EventModel.find({})
+     
+        const events = await EventModel.find({approval:'approved'})
         res.json(events);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+export const getPersonalEvents = async (req, res) => {
+    try {
+           let events;
+        if (req.user.isAdmin) {
+            // Admins can get all events
+            events = await EventModel.find({approval:'pending'});
+        } else {
+            // Organizations can only get their own events
+            events = await EventModel.find({Organizer:req.user._id });
+        }
+        res.json(events);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

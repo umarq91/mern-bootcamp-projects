@@ -75,4 +75,3 @@ export const getPersonalEvents = async (req, res) => {
     }
 }
 
-// will see if more needed

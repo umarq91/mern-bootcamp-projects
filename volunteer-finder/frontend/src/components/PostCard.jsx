@@ -13,7 +13,7 @@ function PostCard({ post }) {
         )}
         <img 
           className='h-40 w-full object-cover rounded-t-lg'
-          src={'https://t4.ftcdn.net/jpg/02/36/07/25/360_F_236072530_kcUaIg8NInOhhln3qxjyAwPXhGflP6W0.jpg'} 
+          src={ post.thumbnail || 'https://t4.ftcdn.net/jpg/02/36/07/25/360_F_236072530_kcUaIg8NInOhhln3qxjyAwPXhGflP6W0.jpg'} 
           alt={post.title} 
         />
       </div>

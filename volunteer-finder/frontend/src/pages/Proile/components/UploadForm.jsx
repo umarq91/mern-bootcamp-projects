@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
+import {toast} from "react-toastify"
 const EventForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading,setisLoading]= useState(false)
 const [thumbmail,setThumbnail] = useState(null)
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+const navigate = useNavigate()
+  const onSubmit = async(data) => {
+    // console.log(data);
+    let obj = {...data,thumbnail:thumbmail[0]}
+     let res =    await axios.post(`${import.meta.env.VITE_BACKEND}/events`,obj)
+     console.log(res);
+    if(res.status==200){
+toast.success("Event created successfully")
+      navigate('/')
+    }
+      };
 
 async function uploadPhoto(e) {
     const file = e.target.files[0];

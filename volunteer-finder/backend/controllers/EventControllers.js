@@ -5,19 +5,26 @@ import { customError } from "../utils/CustomError.js";
 
 // admin should get All EVENTS
 // Organization should only get their EVENTS
-
 export const createEvent = async (req, res) => {
     try {
-        const newEvent = await EventModel.create(req.body);
+        let newEvent;
+        if (req.user.isAdmin) {
+            newEvent = await EventModel.create({ ...req.body, approval: 'approved' ,Organizer: req.user._id});
+        } else {
+            newEvent = await EventModel.create({ ...req.body, approval: 'pending', Organizer: req.user._id });
+        }
+
         // Populate the 'Organizer' field with user details
-        const data = await newEvent.populate('Organizer');
+        await newEvent.populate('Organizer');
+
         // Send the populated event data in the response
-        res.json(data);
+        res.status(200).json(newEvent);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 
 export const deleteEvent = async (req, res) => {

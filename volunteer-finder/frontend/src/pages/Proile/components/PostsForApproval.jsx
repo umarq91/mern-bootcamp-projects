@@ -9,7 +9,7 @@ const [posts,setPosts]=useState([])
     useEffect(()=>{
         const getData=async()=>{
           const res =  await axios.get(`${import.meta.env.VITE_BACKEND}/events/admin`)
-              console.log(res);
+            
           if(res.status==200){
             setPosts(res.data)
           }

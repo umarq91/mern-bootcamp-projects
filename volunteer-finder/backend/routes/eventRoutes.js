@@ -9,7 +9,7 @@ const router = Router();
 
 
 router.get('/',getEvents)
-.post('/',createEvent)
+.post('/',verifyToken,createEvent)
 .patch('/:id',updateEvent)
 .delete('/:id',deleteEvent)
 .get('/posts', verifyToken,getPersonalEvents)

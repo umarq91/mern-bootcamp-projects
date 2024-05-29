@@ -16,7 +16,7 @@ const EventSchema = new mongoose.Schema({
     Organizer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     NumberOfVolunteer: { type: Number, default: 0 },
     status: { type: String, enum: ['upcoming', 'completed'], default: 'upcoming' },
-    approval: { type: String, enum: ['pending', 'approved'], default: 'pending' }
+    approval: { type: String, enum: ['pending', 'approved']}
 }, { timestamps: true });
 
 EventSchema.virtual('id').get(function() {

@@ -80,7 +80,8 @@ export const getPostsForAdmin = async (req, res,next) => {
 
     if (req.user.isAdmin) {
         // Admins can get all events
-        events = await EventModel.find({approval:'pending'});
+       let  events = await EventModel.find({approval:'pending'});
+       res.json(events)
     }else{
         return next(customError(403,"You don't have permission to modify this resource!"))
     }

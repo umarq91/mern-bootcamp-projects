@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND}/auth/user`, { withCredentials: true });
        
+        console.log(response.data);
         setUser(response.data);
       } catch (error) {
         console.error('Failed to fetch user data', error);
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchUserData();
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, getting }}>

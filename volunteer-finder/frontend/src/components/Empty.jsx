@@ -1,9 +1,11 @@
 
 function Empty() {
   return (
-    <div className='flex h-screen justify-center items-center'>
-        <img src="https://t4.ftcdn.net/jpg/02/36/07/25/360_F_236072530_kcUaIg8NInOhhln3qxjyAwPXhGflP6W0.jpg" alt="" />
-      <h1 className='text-2xl font-bold'>No posts yet</h1>
+    <div className='h-screen flex flex-col justify-center items-center'>
+        <img
+        className="w-42 h-42 object-contain rounded-full"
+        src="https://cdni.iconscout.com/illustration/premium/thumb/webpage-not-found-4606305-3809638.png" alt="" />
+      <h1 className='text-2xl md:text-4xl font-bold'>No posts yet</h1>
     </div>
   )
 }

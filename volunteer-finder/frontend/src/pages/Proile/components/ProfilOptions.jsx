@@ -7,7 +7,7 @@ export const ProfileOption = () => {
   const { user,getting } = useAuth();
  
  
-
+console.log(user);
   const { register, handleSubmit,  formState: { errors } } = useForm({
     defaultValues: {
       name: user?.name || "",

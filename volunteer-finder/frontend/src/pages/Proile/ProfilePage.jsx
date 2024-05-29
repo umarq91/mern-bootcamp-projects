@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import PostsOption from './components/PostsOption';
+import PostForApproval from './components/PostsForApproval';
 import { ProfileOption } from './components/ProfilOptions';
 import axios from 'axios';
+import UploadForm from './components/UploadForm';
+import { useAuth } from '../../context/authContext';
 
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState('My Profile');
-const options = ['My Profile', 'My Posts', 'Sochenge'];
+const options = ['My Profile', 'My Posts', 'Create a post'];
+const {user} = useAuth()
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -48,7 +51,11 @@ const options = ['My Profile', 'My Posts', 'Sochenge'];
       case 'My Profile':
         return <ProfileOption/>;
       case 'My Posts':
-        return <PostsOption/>;
+        return <PostForApproval/>;
+        case 'Create a post':
+          return <UploadForm/>;
+          case 'Pending Posts':
+          return <PostForApproval/>;
       default:
         return <p>Main content goes here...</p>;
     }
@@ -80,7 +87,7 @@ const options = ['My Profile', 'My Posts', 'Sochenge'];
       <aside
       ref={sidebarRef}
         id="default-sidebar"
-        className={`fixed  top-12 left-0 z-40 w-64 h-screen transition-transform ${
+        className={`fixed  top-16 left-0 z-40 w-64 h-screen transition-transform ${
           sidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
         }`}
         aria-label="Sidebar"
@@ -91,20 +98,41 @@ const options = ['My Profile', 'My Posts', 'Sochenge'];
           <ul className="space-y-2 font-medium">
             {/* Replace with your actual sidebar links */}
          {options.map((option) => (
+          <>
+
                 <li key={option}>
                 <a
                 href="#"
                 onClick={() => handleOptionClick(option)}
                 className={`flex items-center p-2 rounded-lg group ${
                   selectedOption === option
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+                  : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
-              >
+                >
                 <span className="ms-3">{option}</span>
               </a>
               </li>
+           </>
          ))}
+
+          {user.isAdmin && (
+             <li className=' relative'>
+             <a
+             href="#"
+             onClick={() => handleOptionClick("Pending Posts")}
+             className={`flex items-center p-2 rounded-lg group ${
+               selectedOption === "Pending Posts"
+               ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+               : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+             }`}
+             >
+             <span className="ms-3">{"Pending Posts"}</span>
+            <span className='text-xs absolute  right-3 font-light text-green-600'>admin</span>
+           </a>
+           </li>
+          )}
+
          <li>
                 <a
                 href="#"

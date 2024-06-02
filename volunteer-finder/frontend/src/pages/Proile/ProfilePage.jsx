@@ -4,14 +4,18 @@ import { ProfileOption } from './components/ProfilOptions';
 import axios from 'axios';
 import UploadForm from './components/UploadForm';
 import { useAuth } from '../../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
-  const [selectedOption, setSelectedOption] = useState('My Profile');
-const options = ['My Profile', 'My Posts', 'Create a post'];
-const {user} = useAuth()
+  const options = ['My Profile', 'My Posts', 'Create a post'];
+  const {user,getting} = useAuth()
+  const query = new URLSearchParams(location.search);
+  const navigate = useNavigate()
+  let selectedOption = query.get('option') || 'My Profile';
+
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -31,12 +35,21 @@ const {user} = useAuth()
     };
   }, [sidebarOpen]);
 
+     
+        useEffect(() => {
+          if (!getting && user.isAdmin) {
+            navigate('/profile'); // Redirect to login if user is not authenticated
+          }
+        }, [getting, user, navigate]);
+    
+
   const toggleSidebar = () => {
+    
     setSidebarOpen(!sidebarOpen);
   };
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
+    navigate(`?option=${option}`);
     setSidebarOpen(false); // Close the sidebar on mobile after selecting an option
   };
   
@@ -116,7 +129,7 @@ const {user} = useAuth()
            </>
          ))}
 
-          {user.isAdmin && (
+          {user?.isAdmin && (
              <li className=' relative'>
              <a
              href="#"

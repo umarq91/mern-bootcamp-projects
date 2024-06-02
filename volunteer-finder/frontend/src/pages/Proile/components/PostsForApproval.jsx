@@ -16,13 +16,17 @@ const [posts,setPosts]=useState([])
         }
         getData()
     },[])
+    const handleRemove = async(id) => {
+    const data = posts.filter((post) => post.id !== id)
+  setPosts(data)  
+  }
 
   return (
     <div>
       {posts.length==0 && <Empty/>}
       {/* <MyUploadsCard post={{title}}/> */}
       {posts.map((post) => (
-        <MyUploadsCard post={post} key={post._id}/>
+        <MyUploadsCard post={post} key={post._id} onRemove={handleRemove}/>
       ))}
     </div>
   )

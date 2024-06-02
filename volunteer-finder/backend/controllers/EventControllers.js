@@ -98,3 +98,32 @@ export const getPostsForAdmin = async (req, res,next) => {
         res.status(500).json({ error: 'Internal Server Error' });
 }   
 }
+
+export const eventPermission = async (req, res, next) => {
+    const { id } = req.params;
+    const { action } = req.body; // 'approve' or 'reject'
+
+    try {
+        if (req.user.isAdmin) {
+            let update;
+            if (action === 'approve') {
+                update = { approval: 'approved' };
+            } else if (action === 'reject') {
+                update = { approval: 'rejected' };
+            } else {
+                return next(customError(400, "Invalid action specified!"));
+            }
+
+            const event = await EventModel.findByIdAndUpdate(id, { $set: update }, { new: true });
+            if (!event) {
+                return next(customError(404, "Event not found!"));
+            }
+            res.status(200).json({message: "Event updated successfully!"});
+        } else {
+            return next(customError(403, "You don't have permission to modify this resource!"));
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

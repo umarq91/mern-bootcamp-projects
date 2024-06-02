@@ -1,8 +1,34 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-const MyUploadsCard = ({ post }) => {
+import axios from "axios"
+import {toast} from "react-toastify"
+const MyUploadsCard = ({ post , onRemove}) => {
   const [showMore, setShowMore] = useState(false);
+
+const handleReject = async(id) => {
+  try {
+    const res = await axios.put(`${import.meta.env.VITE_BACKEND}/events/${id}`,{action:"reject"})
+      if(res.status==200){
+        console.log(res);
+        onRemove(id)
+        toast.success("Post rejected successfully")
+      }
+     
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const handleApprove = async(id) => {
+  try {
+  const res = await axios.put(`${import.meta.env.VITE_BACKEND}/events/${id}`,{action:"approve"})
+  if (res.status === 200) {
+    onRemove(id)
+  }
+} catch (error) {
+  console.log(error);
+}
+}
 
   return (
     <div className="block relative mt-10 w-[90%]  h-auto shadow hover:cursor-pointer overflow-hidden rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 hover:scale-105 transition transform ease-in">
@@ -33,13 +59,13 @@ const MyUploadsCard = ({ post }) => {
 
           <div className="flex justify-end p-2">
             <button
-              // onClick={() => handleApprove(post.id)}
+              onClick={() => handleApprove(post.id)}
               className='text-sm m-2 shadow-lg hover:opacity-90 bg-green-700 px-5 rounded-full font-normal text-white p-2 ml-2 font-poppins'
             >
               Approve
             </button>
             <button
-              // onClick={() => handleReject(post.id)}
+              onClick={() => handleReject(post.id)}
               className='text-sm m-2 shadow-lg hover:opacity-90 bg-red-700 px-5 rounded-full font-normal text-white p-2 ml-2 font-poppins'
             >
               Reject

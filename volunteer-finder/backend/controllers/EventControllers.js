@@ -81,14 +81,15 @@ export const getEvents = async (req, res) => {
 
 export const getPersonalEvents = async (req, res) => {
     try {
-           let events;
+        
 
             // Organizations can only get their own events
-            events = await EventModel.find({Organizer:req.user._id });
+        let    events = await EventModel.find({Organizer:req.user._id });
        
         res.json(events);
+    
     } catch (error) {
-        console.log(error);
+        console.log("sd" );
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }

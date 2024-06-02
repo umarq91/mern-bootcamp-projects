@@ -9,14 +9,13 @@ import { UserModel } from "../models/UserModel.js";
 
 const router = Router();
 
-
+router.get('/personal',verifyToken,getPersonalEvents)
 
 router.get('/',getEvents)
 .get('/:id',getEventDetails)
 .post('/',verifyToken,createEvent)
 .patch('/:id',updateEvent)
 .delete('/:id',deleteEvent)
-.get('/posts', verifyToken,getPersonalEvents)
 .get('/admin',verifyToken,getPostsForAdmin)
 .put('/:id',verifyToken,eventPermission)
 

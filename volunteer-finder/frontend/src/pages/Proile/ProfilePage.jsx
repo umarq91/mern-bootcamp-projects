@@ -5,6 +5,7 @@ import axios from 'axios';
 import UploadForm from './components/UploadForm';
 import { useAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
+import ProfilePosts from './components/PostsForApproval';
 
 
 const Sidebar = () => {
@@ -64,7 +65,7 @@ const Sidebar = () => {
       case 'My Profile':
         return <ProfileOption/>;
       case 'My Posts':
-        return <PostForApproval/>;
+        return <ProfilePosts/>;
         case 'Create a post':
           return <UploadForm/>;
           case 'Pending Posts':

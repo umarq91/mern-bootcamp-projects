@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useAuth } from '../context/authContext'
 import axios from "axios"
 import Posts from '../components/Posts'
+import HeroSection from '../components/Hero'
 
 
 function HomePage() {
@@ -10,7 +11,9 @@ function HomePage() {
 
 
   return (
-    <div className='bg-gray-200 h-full '>
+    
+    <div className=' h-full '>
+      <HeroSection/>
       <Posts/>
     </div>
   )

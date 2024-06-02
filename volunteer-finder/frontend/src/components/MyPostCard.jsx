@@ -47,8 +47,8 @@ const handleApprove = async(id) => {
               City: <span className="text-lg">{post.city || 'City'}</span>
             </p>
             <hr />
-            <div className="pt-2 font-poppins bg-blue-300  w-[90%]">
-              <p className="text-sm text-neutral-600 dark:text-neutral-200  bg-red-400">
+            <div className="pt-2 font-poppins w-[90%]">
+              <p className="text-sm text-neutral-600 dark:text-neutral-200 ">
                 {showMore ? post.description : `${post.description.substring(0, 200)}...`}
               </p>
               <button onClick={() => setShowMore(!showMore)} className="text-blue-500 hover:underline">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
-import {toast} from "react-toastify"
+import toast from 'react-hot-toast';
 const EventForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading,setisLoading]= useState(false)
@@ -12,9 +12,13 @@ const navigate = useNavigate()
     // console.log(data);
     let obj = {...data,thumbnail:thumbmail[0]}
      let res =    await axios.post(`${import.meta.env.VITE_BACKEND}/events`,obj)
-     console.log(res);
+    //  toast.promise(res, {
+    //   loading: 'Creating Event...',
+    //   success: 'Event created successfully',
+    //   error: 'Error creating event',
+    //  })
     if(res.status==200){
-toast.success("Event created successfully")
+      toast.success("Event created successfully, wait for admin approval")
       navigate('/')
     }
       };

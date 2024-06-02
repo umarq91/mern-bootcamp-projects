@@ -7,13 +7,15 @@ import axios from "axios"
 import {  AuthProvider } from './context/authContext'
 import Navbar from './components/layout/Navbar'
 import ProfilePage from "./pages/Proile/ProfilePage"
-
+import toast, { Toaster } from 'react-hot-toast';
+import Footer from './components/layout/Footer'
 axios.defaults.withCredentials=true
 function App() {
 
   return (
     <div>
     <AuthProvider>
+    <Toaster />
       <BrowserRouter>
           <Navbar/>
       
@@ -23,6 +25,7 @@ function App() {
         <Route path='/sign-up' element={<SignUp/>} />
         <Route path='/profile'element={<ProfilePage/>}/>
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </AuthProvider>
     </div>

@@ -2,7 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast'
+import { useAuth } from '../context/authContext'
 
 function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -10,18 +11,23 @@ function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const navigate = useNavigate()   
-    // const userInfo = useSelector((state) => state.auth.userInfo)
+    const {user,setUser} =useAuth()
 
+        useEffect(()=>{
+            if(user){
+                navigate('/')
+            }
+        },[])
     const handleLogin = async (data) => {
         try {
             setLoading(true)
             const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/sign-in`, data)
             if (res.status === 200) {
-                // dispatch(login(res.data))
                 setLoading(false)
+                console.log(res.data);
+                setUser(res.data)
+               navigate('/');
                 toast.success('Login successful')
-                
-                window.location.href='/';
             }
         } catch (error) {
             setLoading(false)

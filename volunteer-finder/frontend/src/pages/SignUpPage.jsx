@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import { signUp } from "../features/auth/authSlice"; // Adjust the import path as needed
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {toast} from "react-toastify";
+import toast from "react-hot-toast";
 
 // Define the validation schema using zod
 const schema = z.object({

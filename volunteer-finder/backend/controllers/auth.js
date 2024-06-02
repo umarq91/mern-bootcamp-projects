@@ -18,7 +18,7 @@ export const createUser = async (req, res, next) => {
     let hashedpassword = bcrypt.hashSync(password, salt);
 
     const user = await UserModel.create({
-      username,
+      name:username,
       email,
       password: hashedpassword,
     });

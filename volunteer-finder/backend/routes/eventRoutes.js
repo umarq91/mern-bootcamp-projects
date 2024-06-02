@@ -3,9 +3,12 @@ import { createEvent, deleteEvent, eventPermission, getEvents, getPersonalEvents
 import { verifyToken } from "../middlewares/userVerification.js";
 import { upload } from "../middlewares/multer.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
+import { EventModel } from "../models/EventModel.js";
+import { UserModel } from "../models/UserModel.js";
 
 
 const router = Router();
+
 
 
 router.get('/',getEvents)

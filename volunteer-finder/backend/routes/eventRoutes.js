@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createEvent, deleteEvent, eventPermission, getEvents, getPersonalEvents, getPostsForAdmin, updateEvent } from "../controllers/EventControllers.js";
+import { createEvent, deleteEvent, eventPermission, getEventDetails, getEvents, getPersonalEvents, getPostsForAdmin, updateEvent } from "../controllers/EventControllers.js";
 import { verifyToken } from "../middlewares/userVerification.js";
 import { upload } from "../middlewares/multer.js";
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
@@ -12,6 +12,7 @@ const router = Router();
 
 
 router.get('/',getEvents)
+.get('/:id',getEventDetails)
 .post('/',verifyToken,createEvent)
 .patch('/:id',updateEvent)
 .delete('/:id',deleteEvent)

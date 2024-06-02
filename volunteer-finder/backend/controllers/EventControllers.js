@@ -26,6 +26,19 @@ export const createEvent = async (req, res) => {
 };
 
 
+export const getEventDetails = async (req, res) => {
+    try {
+        console.log("testing");
+        const event = await EventModel.findById(req.params.id);
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+        res.json(event);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 export const deleteEvent = async (req, res) => {
     try {

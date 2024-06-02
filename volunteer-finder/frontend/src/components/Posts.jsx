@@ -19,7 +19,7 @@ const [loading,setLoading]=useState(true)
   return (
     <div className='mx-auto max-w-7xl my-40'>
         {loading && <p>Loading...</p>}
-        <div className='grid grid-cols-1 md:grid-cols-2 place-items-center lg:grid-cols-3  gap-4'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 place-items-center   gap-4'>
 
       {posts.map((post) => (
           <PostCard key={post.id} post={post} />

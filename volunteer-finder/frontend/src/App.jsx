@@ -9,6 +9,7 @@ import Navbar from './components/layout/Navbar'
 import ProfilePage from "./pages/Proile/ProfilePage"
 import toast, { Toaster } from 'react-hot-toast';
 import Footer from './components/layout/Footer'
+import EventDetails from './pages/Proile/EventDetails'
 axios.defaults.withCredentials=true
 function App() {
 
@@ -24,6 +25,8 @@ function App() {
         <Route path='/sign-in' element={<LoginPage/>} />
         <Route path='/sign-up' element={<SignUp/>} />
         <Route path='/profile'element={<ProfilePage/>}/>
+        <Route path='/event/:id'element={<EventDetails/>}/>
+
         </Routes>
         <Footer/>
       </BrowserRouter>

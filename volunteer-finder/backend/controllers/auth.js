@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import { customError } from "../utils/CustomError.js";
 let salt = bcrypt.genSaltSync(10);
 export const createUser = async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { name, password, email } = req.body;
 
   try {
     // check if username already exists
@@ -18,7 +18,7 @@ export const createUser = async (req, res, next) => {
     let hashedpassword = bcrypt.hashSync(password, salt);
 
     const user = await UserModel.create({
-      name:username,
+      name,
       email,
       password: hashedpassword,
     });

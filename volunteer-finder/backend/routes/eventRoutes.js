@@ -9,14 +9,14 @@ import { UserModel } from "../models/UserModel.js";
 
 const router = Router();
 
-router.get('/personal',verifyToken,getPersonalEvents)
+router.get('/personal',verifyToken,getPersonalEvents).get('/admin',verifyToken,getPostsForAdmin)
 
 router.get('/',getEvents)
 .get('/:id',getEventDetails)
 .post('/',verifyToken,createEvent)
 .patch('/:id',updateEvent)
 .delete('/:id',deleteEvent)
-.get('/admin',verifyToken,getPostsForAdmin)
+
 .put('/:id',verifyToken,eventPermission)
 
 router.post('/upload',upload.single('thumbnail'),async(req,res,next)=>{

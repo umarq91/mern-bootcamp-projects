@@ -3,6 +3,7 @@ import { useAuth } from '../context/authContext'
 import axios from "axios"
 import Posts from '../components/Posts'
 import HeroSection from '../components/Hero'
+import Option from '../components/Option'
 
 
 function HomePage() {
@@ -14,6 +15,7 @@ function HomePage() {
     
     <div className=' h-full '>
       <HeroSection/>
+      <Option/>
       <Posts/>
     </div>
   )

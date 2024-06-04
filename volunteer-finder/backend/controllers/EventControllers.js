@@ -101,6 +101,7 @@ export const getPostsForAdmin = async (req, res,next) => {
 
     if (req.user.isAdmin) {
         // Admins can get all events
+        console.log("coming");
        let  events = await EventModel.find({approval:'pending'});
        res.json(events)
     }else{

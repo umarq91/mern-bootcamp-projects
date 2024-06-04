@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaUsers, FaCalendarAlt, FaClock } from 'react-icons/fa'
+import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaUsers, FaCalendarAlt, FaClock,FaAddressBook } from 'react-icons/fa'
 
 function EventDetails() {
     const { id } = useParams()
@@ -48,6 +48,9 @@ function EventDetails() {
                             <FaClock className='mr-2' />Time: <span className='text-gray-700 ml-2'>{event.time}</span>
                         </p>
                         <p className='text-xl text-gray-900 font-semibold flex items-center'>
+                            <FaAddressBook className='mr-2' />Address: <span className='text-gray-700 ml-2'>{event.address}</span>
+                        </p>
+                        <p className='text-xl text-gray-900 font-semibold flex items-center'>
                             <FaMapMarkerAlt className='mr-2' />Location: 
                             <Link to={event.location} target="_blank" className='text-blue-500 ml-2'>Click To Open Location</Link>
                         </p>
@@ -63,7 +66,7 @@ function EventDetails() {
                         </p>
                     </div>
 
-                    {event.location && (
+                    {/* {event.location && (
                         <div className='mt-10'>
                             <iframe
                                 className='w-full h-64 rounded-lg'
@@ -72,7 +75,7 @@ function EventDetails() {
                                 loading="lazy"
                             ></iframe>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

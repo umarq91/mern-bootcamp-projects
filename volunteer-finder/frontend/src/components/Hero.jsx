@@ -4,10 +4,10 @@ export default function HeroSection() {
       <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <div className="sm:max-w-lg">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight font-poppins text-gray-900 sm:text-6xl">
               Welcome to Volunteer Finder
             </h1>
-            <p className="mt-4 text-xl text-gray-500">
+            <p className="mt-4 text-xl text-gray-500 font-montserrat">
              Bringing you the easiest way to grow your network and find volunteers for your events 
             </p>
           </div>

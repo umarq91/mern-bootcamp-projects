@@ -33,7 +33,7 @@ function EventDetails() {
                 </h1>
 
                 <div className='max-w-6xl mx-auto flex flex-col gap-10'>
-                    <p className='md:mt-6 leading-7 text-gray-700'>
+                    <p className='md:mt-6 leading-7 text-gray-600 font-montserrat font-semibold'>
                         {event.description}
                     </p>
 

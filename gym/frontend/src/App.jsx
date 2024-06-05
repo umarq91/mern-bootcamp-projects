@@ -6,6 +6,8 @@ import { BrowserRouter, Routes,Route } from 'react-router-dom'
 import HomePage from './pages/Homepage'
 import UserInfo from './pages/UserInfo'
 import Navbar from '../components/Navbar'
+import AddMember from './pages/AddMember'
+import PayFee from './pages/PayFee'
 
 
 function App() {
@@ -19,6 +21,10 @@ function App() {
       
     <Route path='/' element={<HomePage/>}/>
     <Route path='/admin/user-info' element={<UserInfo/>}/>
+    <Route path='/admin/add-member' element={<AddMember/>}/>
+    <Route path='/admin/pay' element={<PayFee/>}/>
+
+
 
 
     </Routes>

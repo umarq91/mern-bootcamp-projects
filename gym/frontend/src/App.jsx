@@ -8,6 +8,7 @@ import UserInfo from './pages/UserInfo'
 import Navbar from '../components/Navbar'
 import AddMember from './pages/AddMember'
 import PayFee from './pages/PayFee'
+import Trainer from './pages/Trainer'
 
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
     <Route path='/admin/user-info' element={<UserInfo/>}/>
     <Route path='/admin/add-member' element={<AddMember/>}/>
     <Route path='/admin/pay' element={<PayFee/>}/>
+    <Route path='/admin/trainer' element={<Trainer/>}/>
+
 
 
 

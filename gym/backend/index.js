@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser"
 import env from "dotenv"
 import { connectDB } from "./db/db.js"
 import MemberRoutes from "./routes/MemberRoutes.js"
+import TrainerRoutes from "./routes/TrainerRoutes.js"
+
 
 env.config()
 
@@ -25,6 +27,8 @@ app.listen(5000, () => console.log("server running on port 5000"))
 
 
 app.use('/api/v1/members',MemberRoutes)
+app.use('/api/v1/trainer',TrainerRoutes)
+
 app.use((err,req,res,next)=>{
 // 
     const statusCode = err.statusCode || 501;

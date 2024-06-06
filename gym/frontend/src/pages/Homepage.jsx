@@ -9,7 +9,7 @@ function HomePage() {
     { label: 'User Info', url: "/admin/user-info", icon: <FaUser size={50} /> },
     { label: 'Add a Member', url: "/admin/add-member", icon: <FaUserPlus size={50} /> },
     { label: 'Pay Fee', url: "/admin/pay", icon: <FaMoneyCheckAlt size={50} /> },
-    { label: 'Trainer / Coach', url: "", icon: <FaDumbbell size={50} /> },
+    { label: 'Trainer / Coach', url: "/admin/trainer", icon: <FaDumbbell size={50} /> },
   ];
   
   return (

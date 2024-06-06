@@ -1,32 +1,22 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 function PayFee() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      rollNumber: '101',
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '123-456-7890',
-      feePaid: '2024-04-10',
-    },
-    {
-      id: 2,
-      rollNumber: '102',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '987-654-3210',
-      feePaid: '2024-06-01',
-    },
-    {
-      id: 3,
-      rollNumber: '103',
-      name: 'Alice Johnson',
-      email: 'alice@example.com',
-      phone: '555-123-4567',
-      feePaid: '2024-05-30',
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/v1/members');
+        const data = await response.json();
+        console.log(data);
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -34,17 +24,27 @@ function PayFee() {
 
   const handleSearch = () => {
     const query = searchQuery.toLowerCase();
-    const filtered = users.filter(user => user.rollNumber.includes(query));
+    const filtered = users.filter(user => String(user.rollNumber).includes(query));
     setFilteredUsers(filtered);
     setIsSearched(true);
   };
 
-  const handleFeeUpdate = (userId) => {
+  const handleFeeUpdate = async(userId) => {
     const updatedUsers = users.map(user => 
       user.id === userId ? { ...user, feePaid: new Date().toISOString().split('T')[0] } : user
     );
-    setUsers(updatedUsers);
-    setFilteredUsers(updatedUsers.filter(user => user.rollNumber.includes(searchQuery)));
+   let data = await  axios.patch(`http://localhost:5000/api/v1/members/${userId}`);
+  
+     console.log(data);
+    if(data.status==200){
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers.filter(user => String(user.rollNumber).includes(searchQuery)));
+      setTimeout(() => {
+        window.location.href="/admin/user-info";
+      },500)
+    }
+     // setUsers(updatedUsers);
+    // setFilteredUsers(updatedUsers.filter(user => user.rollNumber.includes(searchQuery)));
   };
 
   return (

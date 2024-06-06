@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 function AddMember() {
   const { register, handleSubmit, reset } = useForm();
-  const [users, setUsers] = useState([]);
+  const [completed, setCompleted] = useState(false);
 
-  const onSubmit = (data) => {
-    setUsers([...users, data]);
-    reset();
+  const onSubmit = async (data) => {
+    const { name, email, phone } = data; // Destructure the fields to send
+    try {
+      const response = await axios.post('http://localhost:5000/api/v1/members/add-member', { name, email, phone });
+      if (response.status === 200) {
+        reset();
+        setCompleted(true);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Error adding member:', error);
+    }
   };
 
   return (
@@ -22,15 +34,6 @@ function AddMember() {
               {...register('name', { required: true })}
               className='w-full p-3 border border-gray-300 rounded-md'
               placeholder='Enter Name'
-            />
-          </div>
-          <div>
-            <label className='block mb-2 text-lg font-medium text-gray-700'>Roll Number</label>
-            <input
-              type='text'
-              {...register('rollNumber', { required: true })}
-              className='w-full p-3 border border-gray-300 rounded-md'
-              placeholder='Enter Roll Number'
             />
           </div>
           <div>
@@ -51,14 +54,6 @@ function AddMember() {
               placeholder='Enter Phone'
             />
           </div>
-          <div>
-            <label className='block mb-2 text-lg font-medium text-gray-700'>Fee Paid Date</label>
-            <input
-              type='date'
-              {...register('feePaid', { required: true })}
-              className='w-full p-3 border border-gray-300 rounded-md'
-            />
-          </div>
           <button
             type='submit'
             className='w-full px-5 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300'
@@ -66,22 +61,7 @@ function AddMember() {
             Add User
           </button>
         </form>
-        {users.length > 0 && (
-          <div className='mt-10'>
-            <h3 className='text-2xl font-bold mb-6 text-gray-700'>User List</h3>
-            <ul className='space-y-6'>
-              {users.map((user, index) => (
-                <li key={index} className='bg-gray-50 shadow-md rounded-lg p-6'>
-                  <h4 className='text-xl font-bold text-gray-700'>{user.name}</h4>
-                  <p className='text-gray-600'>Roll Number: {user.rollNumber}</p>
-                  <p className='text-gray-600'>Email: {user.email}</p>
-                  <p className='text-gray-600'>Phone: {user.phone}</p>
-                  <p className='text-gray-600'>Fee Paid Date: {user.feePaid}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {completed && <p className='text-center text-green-500 mt-4'>User added successfully!</p>}
       </main>
     </section>
   );

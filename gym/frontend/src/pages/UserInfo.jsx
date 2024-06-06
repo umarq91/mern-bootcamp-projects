@@ -1,42 +1,29 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 function UserInfo() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      rollNumber: '101',
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '123-456-7890',
-      feePaid: '2024-04-10',
-    },
-    {
-      id: 2,
-      rollNumber: '102',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '987-654-3210',
-      feePaid: '2024-06-01',
-    },
-    {
-      id: 3,
-      rollNumber: '103',
-      name: 'Alice Johnson',
-      email: 'alice@example.com',
-      phone: '555-123-4567',
-      feePaid: '2024-05-30',
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [showPaid, setShowPaid] = useState(true);
   const [showUnpaid, setShowUnpaid] = useState(true);
 
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/v1/members");
+        setUsers(data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
     handleSearch();
-  }, [searchQuery, showPaid, showUnpaid]);
+  }, [searchQuery, showPaid, showUnpaid, users]);
 
   function checkFee(lastDate) {
     const currentDate = new Date();
@@ -48,9 +35,10 @@ function UserInfo() {
 
   function handleSearch() {
     const query = searchQuery.toLowerCase();
-    let filtered = users.filter(user =>
+    console.log(users);
+    let filtered = users?.filter(user =>
       user.name.toLowerCase().includes(query) ||
-      user.rollNumber.includes(query) ||
+      (user?.rollNumber && String(user.rollNumber).includes(query))||
       user.phone.includes(query) ||
       user.email.toLowerCase().includes(query)
     );

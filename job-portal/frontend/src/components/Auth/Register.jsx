@@ -54,7 +54,6 @@ const Register = () => {
       <section className="authPage">
         <div className="container">
           <div className="header">
-            <img src="/JobZeelogo.png" alt="logo" />
             <h3>Create a new account</h3>
           </div>
           <form>
@@ -63,7 +62,7 @@ const Register = () => {
               <div>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Select Role</option>
-                  <option value="Employer">Employer</option>
+                  <option  value="Hiring Manager">Hiring Manager</option>
                   <option value="Job Seeker">Job Seeker</option>
                 </select>
                 <FaRegUser />
@@ -74,7 +73,7 @@ const Register = () => {
               <div>
                 <input
                   type="text"
-                  placeholder="Zeeshan"
+                  placeholder="Haseeb"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -86,7 +85,7 @@ const Register = () => {
               <div>
                 <input
                   type="email"
-                  placeholder="zk@gmail.com"
+                  placeholder="haseeb@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />

@@ -4,6 +4,7 @@ import {
   MdOutlineWebhook,
   MdAccountBalance,
   MdOutlineAnimation,
+  MdHandyman,
 } from "react-icons/md";
 import { TbAppsFilled } from "react-icons/tb";
 import { FaReact } from "react-icons/fa";
@@ -26,13 +27,13 @@ const PopularCategories = () => {
     },
     {
       id: 3,
-      title: "Frontend Web Development",
+      title: "Web Developement",
       subTitle: "200 Open Positions",
       icon: <MdOutlineWebhook />,
     },
     {
       id: 4,
-      title: "MERN STACK Development",
+      title: "Full Stack Developement",
       subTitle: "1000+ Open Postions",
       icon: <FaReact />,
     },
@@ -56,9 +57,9 @@ const PopularCategories = () => {
     },
     {
       id: 8,
-      title: "Game Development",
+      title: "Labour & Employment",
       subTitle: "80 Open Positions",
-      icon: <IoGameController />,
+      icon: <MdHandyman />,
     },
   ];
   return (

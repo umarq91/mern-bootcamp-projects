@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../../main";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +22,8 @@ const Navbar = () => {
       setIsAuthorized(false);
       navigateTo("/login");
     } catch (error) {
-      toast.error(error.response.data.message), setIsAuthorized(true);
+      toast.error(error.response.data.message);
+      setIsAuthorized(true);
     }
   };
 
@@ -30,7 +31,7 @@ const Navbar = () => {
     <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
       <div className="container">
         <div className="logo">
-          <img src="/JobZee-logos__white.png" alt="logo" />
+          {/* <img src="/JobZee-logos__white.png" alt="logo" /> */}
         </div>
         <ul className={!show ? "menu" : "show-menu menu"}>
           <li>
@@ -63,14 +64,11 @@ const Navbar = () => {
                 </Link>
               </li>
             </>
-          ) : (
-            <></>
-          )}
-
+          ) : null}
           <button onClick={handleLogout}>LOGOUT</button>
         </ul>
-        <div className="hamburger">
-          <GiHamburgerMenu onClick={() => setShow(!show)} />
+        <div className="hamburger" onClick={() => setShow(!show)}>
+          <GiHamburgerMenu />
         </div>
       </div>
     </nav>

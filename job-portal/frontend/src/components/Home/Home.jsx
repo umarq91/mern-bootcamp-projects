@@ -18,7 +18,7 @@ const Home = () => {
         <HeroSection />
         <HowItWorks />
         <PopularCategories />
-        <PopularCompanies />
+        {/* <PopularCompanies /> */}
       </section>
     </>
   );

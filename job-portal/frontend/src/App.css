@@ -580,20 +580,24 @@ a:hover {
     width: 100%;
   }
 }
+
+/* Jobs Section Styles */
 .jobs {
-  background: #f1f3f6;
+  background: #f9f9f9;
   min-height: 100vh;
   padding: 50px 20px;
 }
+
 .jobs .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 1500px;
-  max-width: 1500px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   gap: 35px;
 }
+
 .jobs .container .banner {
   display: flex;
   flex-wrap: wrap;
@@ -602,56 +606,81 @@ a:hover {
   justify-content: center;
   padding: 30px 0;
 }
+
 .jobs .container .banner .card {
-  background: #fff;
+  background: #ffffff;
   text-decoration: none;
-  width: 320px;
-  height: 220px;
-  padding: 20px 20px;
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .jobs .container .banner .card:hover {
-  transition: all 0.3s;
-  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
 }
+
 .jobs .container .banner .card p:first-child {
   font-weight: bold;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  color: #333;
 }
+
 .jobs .container .banner .card p:nth-child(2) {
-  font-size: 1.3rem;
-  color: gray;
+  font-size: 1.2rem;
+  color: #555;
 }
+
 .jobs .container .banner .card p:last-child {
   font-size: 1rem;
-  color: gray;
+  color: #777;
 }
+
 .jobs .container .banner .card a {
   text-decoration: none;
-  padding: 7px;
-  font-size: 20px;
-  color: #2d5649;
-  background: rgb(233, 249, 255);
+  padding: 10px;
+  font-size: 1rem;
+  color: #0073e6;
+  background: #e3f2fd;
   width: 100%;
   display: block;
   text-align: center;
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }
-@media (max-width: 1520px) {
+
+.jobs .container .banner .card a:hover {
+  background: #0073e6;
+  color: #ffffff;
+}
+
+@media (max-width: 1200px) {
   .jobs .container {
-    min-width: 100%;
+    padding: 50px 20px;
   }
 }
-@media (max-width: 1060px) {
+
+@media (max-width: 768px) {
   .jobs .container .banner .card {
-    width: 360px;
+    width: 100%;
+    max-width: none;
   }
 }
-@media (max-width: 795px) {
+
+@media (max-width: 480px) {
+  .jobs .container .banner {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .jobs .container .banner .card {
     width: 100%;
   }
@@ -863,110 +892,109 @@ a:hover {
     width: 100%;
   }
 }
-
-.job_post {
-  background: #f1f3f6;
+/* Job Post Page Styles */
+.job-post {
+  background: #f9f9f9;
   padding: 50px 20px;
-  min-height: 870px;
+  min-height: 100vh;
   display: flex;
   align-items: center;
 }
-.job_post .container {
-  max-width: 1500px;
-  min-width: 1500px;
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-  align-items: center;
+
+.job-post .container {
+  max-width: 800px;
   margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
-.job_post .container form {
-  width: 100%;
+
+.job-post .container h3 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+}
+
+.job-post .container form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
-.job_post .container form .wrapper {
-  display: flex;
-  gap: 5vw;
-}
-.job_post .container form .wrapper input,
-.job_post .container form .wrapper select {
-  flex: 1;
-  font-size: 20px;
-  padding: 7px 4px;
-  border: none;
-  background: transparent;
-  border-bottom: 1px solid gray;
-}
-.job_post .container form input,
-.job_post .container form textarea {
-  font-size: 20px;
-  padding: 7px 4px;
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid gray;
-}
-.job_post .container form input:focus,
-.job_post .container form .wrapper input:focus,
-.job_post .container form .wrapper select:focus,
-.job_post .container form textarea:focus,
-.job_post .container form .salary_wrapper select:focus {
-  outline: none;
-}
-.job_post .container form .salary_wrapper {
+
+.job-post .container form .form-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.job_post .container form .salary_wrapper p {
-  color: #d9534f;
-  font-size: 14px;
-  font-weight: 300;
+
+.job-post .container form .form-group label {
+  font-size: 1rem;
+  color: #555;
 }
-.job_post .container form .salary_wrapper select {
-  width: fit-content;
-  font-size: 20px;
-  padding: 7px 4px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid gray;
+
+.job-post .container form .form-group input,
+.job-post .container form .form-group select,
+.job-post .container form .form-group textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border 0.3s ease;
 }
-.job_post .container form .salary_wrapper .ranged_salary {
-  display: flex;
-  gap: 5vw;
+
+.job-post .container form .form-group input:focus,
+.job-post .container form .form-group select:focus,
+.job-post .container form .form-group textarea:focus {
+  border-color: #0073e6;
 }
-.job_post .container form button {
-  width: 100%;
-  background: #2d5649;
-  font-size: 20px;
-  padding: 10px 30px;
-  border: none;
+
+.job-post .container form .form-group textarea {
+  resize: vertical;
+}
+
+.job-post .container form .submit-button {
+  padding: 15px;
+  font-size: 1rem;
   color: #fff;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 2px;
+  background: #0073e6;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
-@media (max-width: 1520px) {
-  .job_post .container {
-    min-width: 100%;
+
+.job-post .container form .submit-button:hover {
+  background: #005bb5;
+}
+
+@media (max-width: 768px) {
+  .job-post .container {
+    padding: 20px;
+  }
+
+  .job-post .container h3 {
+    font-size: 1.5rem;
+  }
+
+  .job-post .container form {
+    gap: 15px;
+  }
+
+  .job-post .container form .form-group input,
+  .job-post .container form .form-group select,
+  .job-post .container form .form-group textarea {
+    font-size: 0.9rem;
+  }
+
+  .job-post .container form .submit-button {
+    padding: 12px;
+    font-size: 0.9rem;
   }
 }
-@media (max-width: 630px) {
-  .job_post .container {
-    min-width: 100%;
-  }
-  .job_post .container form .wrapper,
-  .job_post .container form .salary_wrapper,
-  .job_post .container form .salary_wrapper .ranged_salary {
-    flex-direction: column;
-    gap: 20px;
-  }
-  .job_post .container form .salary_wrapper select {
-    width: 100%;
-  }
-}
+
 .myJobs {
   background: #f1f3f6;
   padding: 50px 20px;

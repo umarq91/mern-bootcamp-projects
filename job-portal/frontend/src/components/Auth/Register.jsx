@@ -62,7 +62,7 @@ const Register = () => {
               <div>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Select Role</option>
-                  <option  value="Hiring Manager">Hiring Manager</option>
+                  <option  value="Employer">Hiring Manager</option>
                   <option value="Job Seeker">Job Seeker</option>
                 </select>
                 <FaRegUser />

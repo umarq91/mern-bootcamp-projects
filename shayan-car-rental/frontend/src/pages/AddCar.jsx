@@ -1,25 +1,53 @@
 import React, { useState } from 'react';
-
+import axios from "axios"
 const AddCar = () => {
   const [car, setCar] = useState({
     name: '',
     model: '',
     description: '',
-    availability: 'Available',
-    pricePerHour: '',
+    availability: true,
+    pricePerDay: '',
     imageUrl: '',
     transmission: 'Manual',
   });
 
   const handleChange = (e) => {
-    setCar({ ...car, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setCar({
+      ...car,
+      [name]: type === 'checkbox' ? checked : value, // Handle checkbox for availability
+    });
+    console.log(car);
+    
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Car details:', car);
-    // Handle form submission (e.g., send data to backend)
+  
+    try {
+      // Send a POST request to the backend with the car data
+      const res = await axios.post('http://localhost:5000/api/cars', car);
+      console.log(res.data); // Log the response data to check if the car was added successfully
+  
+      // Optionally, you can reset the form after successful submission
+      setCar({
+        name: '',
+        model: '',
+        description: '',
+        availability: '',
+        pricePerDay: '',
+        imageUrl: '',
+        transmission: 'Manual',
+      });
+  
+      // You can also add a success message or redirect the user if needed
+      alert('Car added successfully!');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to add the car. Please try again.');
+    }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -80,29 +108,30 @@ const AddCar = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="availability">
             Availability
           </label>
-          <select
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <input
+            className="mr-2 leading-tight"
             id="availability"
+            type="checkbox"
             name="availability"
-            value={car.availability}
+            checked={car.availability}
             onChange={handleChange}
-            required
-          >
-            <option value="Available">Available</option>
-            <option value="Not Available">Not Available</option>
-          </select>
+          />
+          <span className="text-sm text-gray-600">
+            Available
+          </span>
         </div>
 
+
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pricePerHour">
-            Price Per Hour
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pricePerDay">
+            Price Per Day
           </label>
           <input
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            id="pricePerHour"
+            id="pricePerDay"
             type="number"
-            name="pricePerHour"
-            value={car.pricePerHour}
+            name="pricePerDay"
+            value={car.pricePerDay}
             onChange={handleChange}
             placeholder="Enter price per hour"
             required
@@ -138,7 +167,7 @@ const AddCar = () => {
             required
           >
             <option value="Manual">Manual</option>
-            <option value="Auto">Auto</option>
+            <option value="Automatic">Auto</option>
           </select>
         </div>
 

@@ -53,7 +53,7 @@ console.log("test");
     // Generate token
     const token = generateToken(user);
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, user: { id: user._id, username: user.username, role: user.role } });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

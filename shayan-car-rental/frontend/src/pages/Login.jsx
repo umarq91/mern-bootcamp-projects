@@ -1,25 +1,34 @@
 import React, { useContext, useState } from 'react';
-import axios from "axios"
+import axios from "axios";
 import { AuthContext } from '../Context/userContext';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const {setAuthData,authData} = useContext(AuthContext)
-  const handleLogin = async(e) => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-  const {data} =   await axios.post("http://localhost:5000/api/auth/login",{
-      username,password
-    })
-    console.log(data);
-    
-    if(data.token){
-      localStorage.setItem('token',data.token)
-      setAuthData({ token: data.token });
+
+    try {
+      const { data } = await axios.post("http://localhost:5000/api/auth/login", {
+        username,
+        password,
+      });
+
+      if (data.token) {
+        // Use the login function from AuthContext
+        login(data.token, { id: data.user.id, username: data.user.username, role: data.user.role });
+        navigate('/admin/dashboard');
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Optionally handle errors (e.g., show a message to the user)
     }
   };
-console.log(authData);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">

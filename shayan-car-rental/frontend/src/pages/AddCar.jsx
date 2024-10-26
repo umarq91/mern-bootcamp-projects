@@ -79,11 +79,11 @@ const AddCar = () => {
           <input
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             id="model"
-            type="text"
+            type="number"
             name="model"
             value={car.model}
             onChange={handleChange}
-            placeholder="Enter model"
+            placeholder="Enter model year"
             required
           />
         </div>

@@ -2,10 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { MdOutlineCarRental } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [cars, setCars] = useState([]);
   const [editCar, setEditCar] = useState(null);
+  const navigate = useNavigate();
   const [carDetails, setCarDetails] = useState({
     name: '',
     model: '',
@@ -63,10 +65,16 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
+          <div className='flex  justify-between'>
+
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           <MdOutlineCarRental className="inline-block text-blue-500 mr-2" />
           My Car Listings
         </h2>
+    <button onClick={() => navigate('/admin/add')} className='bg-blue-500 py-1 px-6 my-2 hover:bg-green-600 font-semibold rounded-xl text-white'> Add A Car  </button>
+    <button onClick={() => navigate('/admin/bookings')} className='bg-blue-500 py-1 px-6 my-2 hover:bg-green-600 font-semibold rounded-xl text-white'> Bookings  </button>
+         
+          </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border rounded-lg">
             <thead>

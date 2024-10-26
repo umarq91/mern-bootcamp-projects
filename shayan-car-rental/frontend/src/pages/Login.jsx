@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error,setError] = useState('')
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const AdminLogin = () => {
         username,
         password,
       });
-
+ 
       if (data.token) {
         // Use the login function from AuthContext
         login(data.token, { id: data.user.id, username: data.user.username, role: data.user.role });
@@ -26,6 +27,7 @@ const AdminLogin = () => {
       }
     } catch (error) {
       console.error("Login failed:", error);
+      setError(error.response.data.message);
       // Optionally handle errors (e.g., show a message to the user)
     }
   };
@@ -66,7 +68,7 @@ const AdminLogin = () => {
               required
             />
           </div>
-
+    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
           <div className="flex items-center justify-center">
             <button
               type="submit"

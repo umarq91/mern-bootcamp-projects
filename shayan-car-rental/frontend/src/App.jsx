@@ -7,6 +7,7 @@ import { AuthProvider } from './Context/userContext';
 import Navbar from './components/Navbar';
 import AddCar from './pages/AddCar';
 import ProtectedRoute from './components/ProtectedRoute';
+import BookingList from "./pages/BookingList";
 
 function App() {
   return (
@@ -35,6 +36,16 @@ function App() {
                   <AdminDashboard />
                 </ProtectedRoute>
               } 
+              
+            />
+              <Route 
+              path='/admin/bookings' 
+              element={
+                <ProtectedRoute>
+                  <BookingList />
+                </ProtectedRoute>
+              } 
+              
             />
           </Routes>
         </AuthProvider>

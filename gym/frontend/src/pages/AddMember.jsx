@@ -5,17 +5,26 @@ import axios from 'axios';
 function AddMember() {
   const { register, handleSubmit, reset } = useForm();
   const [completed, setCompleted] = useState(false);
+  const [whatsappGroupLink, setWhatsappGroupLink] = useState('');
 
   const onSubmit = async (data) => {
     const { name, email, phone } = data; // Destructure the fields to send
+
+    // Format the phone number for WhatsApp
+    const formattedPhone = `92${phone.replace(/^0/, '')}`; // Remove leading zero and add country code
+
     try {
       const response = await axios.post('http://localhost:5000/api/v1/members/add-member', { name, email, phone });
       if (response.status === 200) {
         reset();
         setCompleted(true);
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
+        
+        // Set the WhatsApp group link
+        const groupId = 'https://chat.whatsapp.com/FNE1kwVNEHKBcscnMUSn9I'; // Your actual group ID
+        const inviteLink = `https://wa.me/${formattedPhone}?text=Join%20my%20WhatsApp%20group%3A%20${groupId}`;
+        setWhatsappGroupLink(inviteLink);
+
+      
       }
     } catch (error) {
       console.error('Error adding member:', error);
@@ -46,7 +55,7 @@ function AddMember() {
             />
           </div>
           <div>
-            <label className='block mb-2 text-lg font-medium text-gray-700'>Phone</label>
+            <label className='block mb-2 text-lg font-medium text-gray-700'>Phone (without leading zero)</label>
             <input
               type='text'
               {...register('phone', { required: true })}
@@ -61,7 +70,12 @@ function AddMember() {
             Add User
           </button>
         </form>
-        {completed && <p className='text-center text-green-500 mt-4'>User added successfully!</p>}
+        {completed && (
+          <div className='text-center text-green-500 mt-4'>
+            <p>User added successfully!</p>
+            <p>Invite link: <a href={whatsappGroupLink} className='text-blue-500' target="_blank" rel="noopener noreferrer">Join WhatsApp Group</a></p>
+          </div>
+        )}
       </main>
     </section>
   );

@@ -9,6 +9,8 @@ import Navbar from '../components/Navbar'
 import AddMember from './pages/AddMember'
 import PayFee from './pages/PayFee'
 import Trainer from './pages/Trainer'
+import BMICalculator from './pages/BMICalculator'
+import SendMessage from './pages/SendMessage'
 
 
 function App() {
@@ -25,6 +27,10 @@ function App() {
     <Route path='/admin/add-member' element={<AddMember/>}/>
     <Route path='/admin/pay' element={<PayFee/>}/>
     <Route path='/admin/trainer' element={<Trainer/>}/>
+    <Route path='/admin/bmi' element={<BMICalculator/>}/>
+    <Route path='/admin/annoucements' element={<SendMessage/>}/>
+
+
 
 
 

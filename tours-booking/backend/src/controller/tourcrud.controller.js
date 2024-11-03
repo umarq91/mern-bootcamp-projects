@@ -4,6 +4,7 @@ import {customError} from "../utils/CustomError.js"
 import {upload} from "../middlewares/multer.middleware.js"
 import { uploadOnCloudinary } from "../utils/Cloudinary.js"
 import {ApiResonse} from "../utils/ApiResponse.js"
+import BookingModel from "../models/bookings.js"
 
 // Add Tour
 
@@ -34,7 +35,6 @@ export const addTour = async (req, res, next) => {
     let highlightsUpdated = highlights.split(',').map((term) => term.trim());
     let thingstokeepinMindUpdated = thingstokeepinMind.split(',').map((term) => term.trim());
     let includedUpdated = included.split(',').map((term) => term.trim());
-console.log(req.body);
     const added = await TourModel.create({
       ...req.body,
       gallery: addedPhotos,
@@ -43,6 +43,7 @@ console.log(req.body);
       thingstokeepinMind: thingstokeepinMindUpdated,
       included: includedUpdated,
       postedBy: id,
+      seatsLeft:groupSize,
       duration: {
         days: duration.days,
         nights: duration.nights,
@@ -55,10 +56,7 @@ console.log(req.body);
   }
 };
 
-
-
 // Update Tour
-
 export const tourUpdate = async(req,res,next)=>{
   const {id} = req.params;
 console.log("update req");
@@ -93,10 +91,7 @@ console.log("update req");
   }
 }
 
-
-
 // Delete Tour
-
   export const tourDelete = async(req,res,next)=>{
 
     const {id} = req.params;
@@ -120,10 +115,7 @@ console.log("update req");
   }
 }
 
-
 // Get Tour 
-
-
 export const getTour = async(req,res,next)=>{
   // const {name} = req.params;
   const {id} = req.params
@@ -165,6 +157,8 @@ export const getTourDetails = async(req,res,next)=>{
 
 
 export const UploadItems = async (req, res, next) => {
+  console.log(req.files);
+  
   const uploadedFiles = [];
   const files = req.files;
 
@@ -207,3 +201,44 @@ export const getUserTours=async(req,res,next)=>{
   }
 
 }
+
+
+export const bookaTour = async (req, res, next) => {
+  try {
+    const { tourId, name, email, phone, people ,total} = req.body;
+
+    // Check if the tour exists
+    const tour = await TourModel.findById(tourId);
+    if (!tour) {
+      return next(customError(404, "Tour not found"));
+    }
+
+    // Check if there are enough seats available
+    if (tour.seatsLeft < people) {
+      return next(customError(400, "Not enough seats available"));
+    }
+
+    // Create a new booking
+    const newBooking = new BookingModel({
+      tourId,
+      name,
+      email,
+      phone,
+      people,
+      bill:total,
+      userId:tour?.postedBy
+    });
+
+    await newBooking.save();
+
+    // Update the tour's available seats
+    tour.seatsLeft -= people;
+    await tour.save();
+
+    // Respond with the created booking details
+    res.status(201).json(new ApiResonse(201, newBooking, "Booking confirmed"));
+  } catch (error) {
+    console.error("Booking creation error:", error);
+    next(error); // Pass error to the global error handler
+  }
+};

@@ -21,7 +21,10 @@ const TourSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
-   groupSize: Number,
+    groupSize: Number,
+    seatsLeft:{
+        type:Number,
+      default:0},
     requirements: [String],
     mapLocation: String,
     included:[String],

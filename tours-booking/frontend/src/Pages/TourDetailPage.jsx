@@ -6,6 +6,7 @@ import ImageGallery from 'react-image-gallery'
 import {UserContext} from "../Context/UserContext"
 import { FaWhatsapp } from "react-icons/fa";
 import BreadCrumbs from '../Components/Extra/BreadCrumbs'
+import { BookingModal } from '../Components/Modal'
 
 export const TourDetailPage = () => {
     const {id} = useParams()
@@ -15,6 +16,7 @@ export const TourDetailPage = () => {
    const [loading, setLoading] = useState(true);
    const [numOfPeople,setNumOfPeopl] = useState(1);
    const [total,setTotal] = useState(0)
+   const [isModalOpen,setIsModalOpen] = useState(false)
 const {user} = useContext(UserContext)
   useEffect(()=>{
     const getdata = async () => {
@@ -51,7 +53,7 @@ const {user} = useContext(UserContext)
   }
 
   return (
-    <div className="md:mt-16">
+    <div className="md:mt-16 min-h-screen">
       {loading ? (
         // Display a loading indicator or placeholder while data is being fetched
         <p className="text-4xl font-semibold font-poppins text-center">
@@ -358,18 +360,23 @@ const {user} = useContext(UserContext)
                   </Link>
                   :
                   <>
-                  <button className='text-xl bg-green-500 px-16 py-4 hover:bg-green-400 flex  gap-2' onClick={()=> handleproceedBooking()}> 
-                  <FaWhatsapp/>
-                  Proceed Booking </button>
                  
+                  <button className='text-xl bg-blue-500 px-16 py-4 hover:bg-blue-400 flex  gap-2' onClick={()=> setIsModalOpen(true)}> 
+                  Proceed Booking </button>
                   </>
                 }
+                {place?.seatsLeft === 0 && (
+                  <p className='text-red-600 text-xs mt-3'>No Seats Available</p>
+                )}
+                {place?.seatsLeft && place?.seatsLeft !== 0 && (
+                  <p className='text-green-600 text-xs mt-3'>Only {place?.seatsLeft} Seats Available</p>
+                )}
                 </div>
 
               </div>
 
                 {/* Why Book Us section  */}
-                <div className="border border-2 border-gray-300 mt-20   w-96 p-4"> 
+                <div className="border  border-gray-300 mt-20   w-96 p-4"> 
 
                   <h3 className='text-3xl font-poppins my-10 text-center'> Why Book us ?</h3>
 
@@ -410,6 +417,9 @@ const {user} = useContext(UserContext)
             </div>
           </div>
         </>
+      )}
+      {isModalOpen && (
+       <BookingModal total={total} isOpen={isModalOpen} onClose={()=>setIsModalOpen(false)  } people={numOfPeople}  tourId={id} seats={place?.seatsLeft}/>
       )}
     </div>
   );

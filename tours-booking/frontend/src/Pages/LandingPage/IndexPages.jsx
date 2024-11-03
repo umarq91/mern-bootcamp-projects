@@ -30,11 +30,11 @@ const IndexPages = () => {
   return (
     <>
       <div className="max-w-full overflow-hidden bg-gray-900 text-white">
-        {/* <div className="coursel md:mb-48 lg:mb-96">
-          <CustomCarousel />
-        </div> */}
+     
 
         <Hero />
+
+   
         <main className="max-w-7xl mx-auto px-6 sm:px-16">
 
           <section className="my-24 flex justify-center items-center flex-col">
@@ -54,13 +54,13 @@ const IndexPages = () => {
             <p className="text-center text-gray-400">
               Here are some Cool Attraction point Ideas for your Next Tour
             </p>
-            {/* <ReactSlick /> */}
+            <ReactSlick />
           </section>
 
         </main>
 
         {/* Upcoming */}
-        {/* <LatestTours /> */}
+        <LatestTours />
 
         {/* Most Viewed */}
         <MostViewed />

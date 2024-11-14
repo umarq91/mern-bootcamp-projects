@@ -10,7 +10,6 @@ import BookingModel from "../models/bookings.js"
 
 export const addTour = async (req, res, next) => {
   const { id } = req.user;
-  console.log(id);
   let {
     tourname,
     location,
@@ -242,3 +241,39 @@ export const bookaTour = async (req, res, next) => {
     next(error); // Pass error to the global error handler
   }
 };
+
+
+export const bookings = async(req,res)=>{
+//  try {
+//     // Use `.find()` to get all bookings
+//     const bookings = await BookingModel.find()
+//         .populate("tourId")  // Populate tour details if needed
+//         .populate("userId"); // Populate user details if needed
+
+//     res.status(200).json({
+//         success: true,
+//         data: bookings,
+//     });
+// } catch (error) {
+//     res.status(500).json({
+//         success: false,
+//         message: error.message,
+//     });
+// }
+try {
+  // Find all tours posted by the current admin
+  const adminId = req.user.id; // Assuming req.user contains the authenticated admin's data
+  const tours = await TourModel.find({ postedBy: adminId });
+
+  // Extract tour IDs
+  const tourIds = tours.map(tour => tour._id);
+
+  // Fetch bookings for the admin's tours
+  const bookings = await BookingModel.find({ tourId: { $in: tourIds } }).populate('tourId').populate('userId', 'name email');
+
+  return res.status(200).json({ bookings });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Error fetching bookings', error });
+}
+}

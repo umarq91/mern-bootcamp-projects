@@ -8,6 +8,8 @@ import TourRoutes from "./routes/tour.route.js"
 import TourModel from "./models/tour.model.js";
 const app =express();
 import dotenv from "dotenv"
+import { bookings } from "./controller/tourcrud.controller.js";
+import { verifyToken } from "./middlewares/VerifyToken.js";
 dotenv.config();
 
 app.use(express.json())
@@ -23,14 +25,11 @@ app.use(cors({
 
 
 
+app.get('/api/bookings',verifyToken,bookings)
 // Routes
 app.use("/api/auth",AuthRoutes)
 app.use("/api/user",UserRoutes)
 app.use('/api/tour',TourRoutes)
-
-
-
-
 
 
 

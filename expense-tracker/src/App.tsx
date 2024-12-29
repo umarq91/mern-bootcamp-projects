@@ -1,11 +1,18 @@
-import Dashboard from './pages/Dashboard'
+import { RedirectToSignIn, useUser } from "@clerk/clerk-react";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
-  return (
-    <div className='font-poppins'>
-   <Dashboard/>
-    </div>
-  )
-}
+  const { user, isSignedIn } = useUser();
+  console.log(user);
 
-export default App
+
+  return (
+    <div className="font-poppins">
+      <Navbar />
+      <Dashboard />
+    </div>
+  );
+};
+
+export default App;

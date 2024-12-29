@@ -20,13 +20,6 @@ function Dashboard({}: Props) {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Header */}
-      <header className="bg-indigo-600 py-6 shadow-md">
-        <h1 className="text-4xl font-bold text-center text-white">
-          Expense Tracker
-        </h1>
-      </header>
-
       {/* Balance Section */}
       <div className="py-10 px-6">
         <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">

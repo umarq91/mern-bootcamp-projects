@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Transaction } from "../types";
 
-interface Transaction {
-  category: string;
-  amount: number;
-  type: "Cash" | "Bank";
-  note?: string;
-}
 
 interface Props {
   isOpen: boolean;
@@ -81,7 +76,7 @@ const TransactionLogs = ({
                   Category
                 </th>
                 <th className="px-6 py-4 font-medium text-gray-900">Amount</th>
-                <th className="px-6 py-4 font-medium text-gray-900">Type</th>
+                <th className="px-6 py-4 font-medium text-gray-900">Account type</th>
                 <th className="px-6 py-4 font-medium text-gray-900">Note</th>
               </tr>
             </thead>
@@ -96,7 +91,7 @@ const TransactionLogs = ({
                   >
                     <td className="px-6 py-4">{transaction.category}</td>
                     <td className="px-6 py-4">{transaction.amount}</td>
-                    <td className="px-6 py-4">{transaction.type}</td>
+                    <td className="px-6 py-4">{transaction.accountType}</td>
                     <td className="px-6 py-4">{transaction.note || "-"}</td>
                   </tr>
                 ))

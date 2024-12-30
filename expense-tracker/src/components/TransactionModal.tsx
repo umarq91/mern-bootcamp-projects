@@ -4,6 +4,8 @@ import { addExpenseAtom, addInComeAtom, categoriesAtom } from "../jotai/store";
 import { AccountType } from "../types";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { addTransactionApi } from "../api/Transaction";
+import { useUser } from "@clerk/clerk-react";
 
 interface Props {
   isOpen: boolean;
@@ -16,7 +18,7 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
   const [category, setCategory] = useState("");
   const [accountType, setAccountType] = useState<AccountType>("Cash");
   const [description, setDescription] = useState("");
-
+  const { user } = useUser();
   const [categories] = useAtom(categoriesAtom);
   const [_, addExpense] = useAtom(addExpenseAtom);
   const [__, addIncome] = useAtom(addInComeAtom);
@@ -28,14 +30,34 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
       amount,
       category,
       type: accountType,
-      note:description,
+      note: description,
     };
 
+    if (!user || !user.id) return;
     if (type === "Expense") {
-      addExpense(transactionData);
+      addTransactionApi(
+        {
+          amount,
+          accountType,
+          type: "Expense",
+          category,
+          note: description,
+        },
+        user?.id
+      );
       toast.success("Expense added successfully");
     } else if (type === "Income") {
-      addIncome(transactionData);
+      addTransactionApi(
+        {
+          amount,
+          accountType,
+          type: "Income",
+          category,
+          note: description,
+        },
+        user?.id
+      );
+
       toast.success("Income Activity successfully");
     }
     setAmount(0);

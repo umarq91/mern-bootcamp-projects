@@ -6,21 +6,18 @@ import { Transaction } from "../types";
 interface Props {
   isOpen: boolean;
   closeModal: () => void;
-  incomeData: Transaction[];
-  expenseData: Transaction[];
+ data:Transaction[]
 }
 
 const TransactionLogs = ({
   isOpen,
   closeModal,
-  incomeData,
-  expenseData,
+data
 }: Props) => {
-  const [activeTab, setActiveTab] = useState("Expenses");
 
   if (!isOpen) return null;
 
-  const transactions = activeTab === "Income" ? incomeData : expenseData;
+  const transactions = data
 
   return (
     <motion.div
@@ -45,28 +42,7 @@ const TransactionLogs = ({
           </button>
         </div>
 
-        <div className="flex border-b border-gray-300">
-          <button
-            className={`flex-1 text-lg font-medium py-3 text-center transition-all duration-200 border-b-2 ${
-              activeTab === "Expenses"
-                ? "border-indigo-500 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActiveTab("Expenses")}
-          >
-            Expenses
-          </button>
-          <button
-            className={`flex-1 text-lg font-medium py-3 text-center transition-all duration-200 border-b-2 ${
-              activeTab === "Income"
-                ? "border-indigo-500 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActiveTab("Income")}
-          >
-            Income
-          </button>
-        </div>
+
 
         <div className="overflow-auto">
           <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">

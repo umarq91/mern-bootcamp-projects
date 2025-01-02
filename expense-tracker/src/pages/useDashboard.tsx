@@ -10,7 +10,9 @@ import {
 function useDashboard() {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
-  const [IsActivityLogModalOpen, setIsActivityLogModalOpen] = useState(false);
+  
+  const [isExpenseActivityLogModal, setIsExpenseActivityLogModalOpen] = useState(false);
+  const [isIncomeActityLogModal,setIsIncomeActivityLogModalOpen] = useState(false)
 
   const [expense] = useAtom(cashAccountAtom);
   const [income] = useAtom(bankAccountAtom);
@@ -23,8 +25,10 @@ function useDashboard() {
     setIsExpenseModalOpen,
     isIncomeModalOpen,
     setIsIncomeModalOpen,
-    IsActivityLogModalOpen,
-    setIsActivityLogModalOpen,
+    isExpenseActivityLogModal,
+    setIsExpenseActivityLogModalOpen,
+    isIncomeActityLogModal,
+    setIsIncomeActivityLogModalOpen,
     expense,
     income,
     expensesData,

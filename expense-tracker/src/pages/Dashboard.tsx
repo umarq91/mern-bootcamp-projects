@@ -4,21 +4,21 @@ import TransactionLogs from "../components/Transactions";
 import Balance from "../components/Balance";
 import useDashboard from "./useDashboard";
 
-
 function Dashboard() {
   const {
-    IsActivityLogModalOpen,
+    isExpenseActivityLogModal,
     expense,
     income,
-    setIsActivityLogModalOpen,
+    setIsExpenseActivityLogModalOpen,
     setIsExpenseModalOpen,
+    setIsIncomeActivityLogModalOpen,
     setIsIncomeModalOpen,
     isExpenseModalOpen,
     isIncomeModalOpen,
     expensesData,
-    incomeData
+    isIncomeActityLogModal,
+    incomeData,
   } = useDashboard();
-
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -33,7 +33,8 @@ function Dashboard() {
       <Tabs
         setIsExpenseModalOpen={setIsExpenseModalOpen}
         setIsIncomeModalOpen={setIsIncomeModalOpen}
-        setIsActivityLogModalOpen={setIsActivityLogModalOpen}
+        setIsActivityLogModalOpen={setIsExpenseActivityLogModalOpen}
+        setIsIncomeActivityLogModalOpen={setIsIncomeActivityLogModalOpen}
       />
 
       <TransactionModal
@@ -41,6 +42,7 @@ function Dashboard() {
         closeModal={() => setIsExpenseModalOpen(false)}
         type="Expense"
       />
+
       <TransactionModal
         isOpen={isIncomeModalOpen}
         closeModal={() => setIsIncomeModalOpen(false)}
@@ -48,13 +50,16 @@ function Dashboard() {
       />
 
       <TransactionLogs
-        closeModal={() => setIsActivityLogModalOpen(false)}
-        isOpen={IsActivityLogModalOpen}
-        expenseData={expensesData}
-        incomeData={incomeData}
+        closeModal={() => setIsExpenseActivityLogModalOpen(false)}
+        isOpen={isExpenseActivityLogModal}
+        data={expensesData}
       />
 
-      
+      <TransactionLogs
+        closeModal={() => setIsIncomeActivityLogModalOpen(false)}
+        isOpen={isIncomeActityLogModal}
+        data={incomeData}
+      />
     </div>
   );
 }

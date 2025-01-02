@@ -11,7 +11,7 @@ function Tab({ children, className, onClick }: Props) {
     <div
       onClick={onClick}
       className={`p-10 bg-blue-300 text-center text-2xl font-bold border border-2 border-black border-opacity-20
-         hover:opacity-90 cursor-pointer ${className}`}
+         hover:opacity-90 cursor-pointer shadow-lg ${className}`}
     >
       {children}
     </div>

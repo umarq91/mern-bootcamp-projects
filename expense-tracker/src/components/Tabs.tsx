@@ -27,20 +27,28 @@ function Tabs({ setIsExpenseModalOpen, setIsIncomeModalOpen,setIsActivityLogModa
           <p className="text-lg font-medium text-gray-700">Add Income</p>
         </div>
       </Tab>
-      <Tab className="bg-yellow-300">
+      {/* <Tab className="bg-yellow-300">
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition duration-200">
           <span className="text-indigo-600 text-3xl font-bold">📂</span>
           <p className="text-lg font-medium text-gray-700">Categories</p>
         </div>
-      </Tab>
+      </Tab> */}
       <Tab
       onClick={()=>setIsActivityLogModalOpen(true)}
       className="bg-pink-400">
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition duration-200">
           <span className="text-indigo-600 text-3xl font-bold">📋</span>
-          <p className="text-lg font-medium text-gray-700">All Expenses</p>
+          <p className="text-lg font-medium text-gray-700">Transaction Logs</p>
         </div>
       </Tab>
+      {/* <Tab
+      onClick={()=>setIsActivityLogModalOpen(true)}
+      className="bg-orange-700">
+        <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition duration-200">
+          <span className="text-indigo-600 text-3xl font-bold">📋</span>
+          <p className="text-lg font-medium text-gray-700">Income Logs</p>
+        </div>
+      </Tab> */}
     </div>
   );
 }

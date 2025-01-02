@@ -1,7 +1,7 @@
 import { useClerk, useUser } from "@clerk/clerk-react";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
 import { useAtom } from "jotai";
 import {
@@ -10,7 +10,7 @@ import {
   expensesAtom,
   incomeAtom,
 } from "./jotai/store";
-import { Transaction } from "./types";
+import { motion } from "framer-motion";
 
 const App = () => {
   const { user, isSignedIn } = useUser();
@@ -19,6 +19,7 @@ const App = () => {
   const [bankAtom, setBankAmount] = useAtom(bankAccountAtom);
   const [expenses, setExpenses] = useAtom(expensesAtom);
   const [income, setIncome] = useAtom(incomeAtom);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   const fetchUserData = async () => {
     try {
@@ -32,7 +33,6 @@ const App = () => {
         .single();
 
       if (accountsError && accountsError.code !== "PGRST116") {
-        // Log error unless it's "no rows returned" (code: PGRST116)
         console.error("Error fetching account balance:", accountsError);
         return;
       }
@@ -52,10 +52,10 @@ const App = () => {
 
       if (transactionsData) {
         const expenses = transactionsData.filter(
-          (t: Transaction) => t.type === "Expense"
+          (t) => t.type === "Expense"
         );
         const income = transactionsData.filter(
-          (t: Transaction) => t.type === "Income"
+          (t) => t.type === "Income"
         );
         setExpenses(expenses);
         setIncome(income);
@@ -69,10 +69,24 @@ const App = () => {
     try {
       if (!user?.id) return;
 
-      // Insert or update the user's balance with defaults if it doesn't exist
+      const { data: existingBalance, error: fetchError } = await supabase
+        .from("balance")
+        .select("*")
+        .eq("userId", user.id)
+        .single();
+
+      if (fetchError && fetchError.code !== "PGRST116") {
+        throw fetchError;
+      }
+
+      if (existingBalance) {
+        console.log("User already exists in Supabase:", existingBalance);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("balance")
-        .upsert({ userId: user.id, cash: 0, bank: 0 },{onConflict: 'userId'});
+        .insert({ userId: user.id, cash: 0, bank: 0 });
 
       if (error) throw error;
 
@@ -83,19 +97,49 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (user && isSignedIn) {
-      // Ensure the user has a default entry in Supabase
-      initializeUserInSupabase();
-
-      // Fetch user-specific data
-      fetchUserData();
-    }
+    const initializeApp = async () => {
+      if (user && isSignedIn) {
+        setIsLoading(true); // Start loading
+        await initializeUserInSupabase();
+        await fetchUserData();
+        setIsLoading(false); // End loading
+      }
+    };
+    initializeApp();
   }, [user, isSignedIn]);
+
+  // Refetch when atoms change
+  useEffect(() => {
+    fetchUserData();
+  }, [cashAtom, bankAtom, expenses, income]);
 
   return (
     <div className="font-poppins">
-      <Navbar />
-      <Dashboard />
+      {isLoading ? (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="w-16 h-16 border-4 border-t-blue-500 border-gray-300 rounded-full animate-spin"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1.2 }}
+            transition={{
+              repeat: Infinity,
+              duration: 1,
+              repeatType: "reverse",
+            }}
+          />
+        </motion.div>
+      ) : (
+        <>
+          <Navbar />
+          <Dashboard />
+        </>
+      )}
     </div>
   );
 };

@@ -1,6 +1,13 @@
+/* Updated TransactionModal component */
 import { useAtom } from "jotai";
 import React, { useState } from "react";
-import { addExpenseAtom, addInComeAtom, categoriesAtom } from "../jotai/store";
+import {
+  addExpenseAtom,
+  addInComeAtom,
+  bankAccountAtom,
+  cashAccountAtom,
+  categoriesAtom,
+} from "../jotai/store";
 import { AccountType } from "../types";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -15,17 +22,21 @@ interface Props {
 
 const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
   const [amount, setAmount] = useState(0);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Food"); // Default category
   const [accountType, setAccountType] = useState<AccountType>("Cash");
   const [description, setDescription] = useState("");
   const { user } = useUser();
   const [categories] = useAtom(categoriesAtom);
   const [_, addExpense] = useAtom(addExpenseAtom);
   const [__, addIncome] = useAtom(addInComeAtom);
+  const [cashAmountATom, setCashAtom] = useAtom(cashAccountAtom);
+  const [bankAmountAtom, setBankAtom] = useAtom(bankAccountAtom);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (amount <= 0) return;
+    if (!user || !user.id) return;
+
     const transactionData = {
       amount,
       category,
@@ -33,37 +44,29 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
       note: description,
     };
 
-    if (!user || !user.id) return;
-    if (type === "Expense") {
-      addTransactionApi(
-        {
-          amount,
-          accountType,
-          type: "Expense",
-          category,
-          note: description,
-        },
-        user?.id
-      );
-      toast.success("Expense added successfully");
-    } else if (type === "Income") {
-      addTransactionApi(
-        {
-          amount,
-          accountType,
-          type: "Income",
-          category,
-          note: description,
-        },
-        user?.id
-      );
+    addTransactionApi(
+      {
+        amount,
+        accountType,
+        type,
+        category,
+        note: description,
+      },
+      user?.id
+    );
 
-      toast.success("Income Activity successfully");
-    }
+    toast.success(`${type} added successfully`, {
+      position: "bottom-right",
+    });
+
     setAmount(0);
-    setCategory("");
+    setCategory("Food");
     setDescription("");
     closeModal();
+  };
+
+  const handleSuggestedCategoryClick = (cat: string) => {
+    setCategory(cat);
   };
 
   if (!isOpen) return null;
@@ -104,7 +107,7 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
 
           {/* Category */}
           <div>
-            <label
+            {/* <label
               htmlFor="category"
               className="block text-sm font-semibold text-gray-700"
             >
@@ -117,13 +120,33 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
               className="w-full mt-2 px-4 py-2 border-2 border-gray-300 rounded-md shadow-sm text-lg text-gray-800 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
               required
             >
-              <option value="">Select category</option>
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
-            </select>
+            </select> */}
+
+            {/* Suggested Categories */}
+            <div className="mt-4">
+              <p className="text-sm font-medium text-gray-700">Suggested Categories:</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => handleSuggestedCategoryClick(cat)}
+                    className={`px-3 py-1 rounded-full border text-xs ${
+                      category === cat
+                        ? "bg-indigo-500 text-white"
+                        : "bg-gray-100 text-gray-800"
+                    } hover:bg-indigo-400 hover:text-white transition`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Account Type */}
@@ -156,6 +179,7 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
               </label>
             </div>
           </div>
+
           {/* Note or Description */}
           <div>
             <label

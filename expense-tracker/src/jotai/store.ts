@@ -5,19 +5,19 @@ import { TransactionPaload, Transaction } from "../types";
 export const cashAccountAtom = atom(0);
 export const bankAccountAtom = atom(0);
 export const categoriesAtom = atom([
+  "Food",
   "Transport",
   "Entertainment",
   "Utilities",
-  "Food",
   "Grocery",
   "Loan",
   "Rent",
-  "Other",
   "Health",
   "Clothing",
   "Travel",
   "Savings",
   "Investments",
+  "Other",
 ]);
 export const expensesAtom = atom<Transaction[]>([]);
 export const incomeAtom = atom<Transaction[]>([]);

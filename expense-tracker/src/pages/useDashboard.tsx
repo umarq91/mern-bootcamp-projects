@@ -1,6 +1,11 @@
 import { useAtom } from "jotai";
 import React, { useState } from "react";
-import { bankAccountAtom, cashAccountAtom, expensesAtom, incomeAtom } from "../jotai/store";
+import {
+  bankAccountAtom,
+  cashAccountAtom,
+  expensesAtom,
+  incomeAtom,
+} from "../jotai/store";
 
 function useDashboard() {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
@@ -13,7 +18,6 @@ function useDashboard() {
   const [expensesData] = useAtom(expensesAtom);
   const [incomeData] = useAtom(incomeAtom);
 
-  
   return {
     isExpenseModalOpen,
     setIsExpenseModalOpen,
@@ -23,8 +27,8 @@ function useDashboard() {
     setIsActivityLogModalOpen,
     expense,
     income,
-  expensesData,
-  incomeData,
+    expensesData,
+    incomeData,
   };
 }
 

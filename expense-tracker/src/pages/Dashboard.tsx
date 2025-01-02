@@ -53,6 +53,8 @@ function Dashboard() {
         expenseData={expensesData}
         incomeData={incomeData}
       />
+
+      
     </div>
   );
 }

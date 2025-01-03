@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
 import { useAtom } from "jotai";
 import {
+  addExpenseAtom,
+  addInComeAtom,
   bankAccountAtom,
   cashAccountAtom,
   expensesAtom,
@@ -14,14 +16,14 @@ import { motion } from "framer-motion";
 
 const App = () => {
   const { user, isSignedIn } = useUser();
-  const clerk = useClerk();
   const [cashAtom, setCashAmount] = useAtom(cashAccountAtom);
   const [bankAtom, setBankAmount] = useAtom(bankAccountAtom);
   const [expenses, setExpenses] = useAtom(expensesAtom);
   const [income, setIncome] = useAtom(incomeAtom);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserData = async () => {
+    console.log("Called");
     try {
       if (!user?.id) return;
 
@@ -43,20 +45,14 @@ const App = () => {
       }
 
       // Fetch transaction history
-      const { data: transactionsData, error: transactionsError } = await supabase
-        .from("transactions")
-        .select("*")
-        .eq("userId", user.id);
+      const { data: transactionsData, error: transactionsError } =
+        await supabase.from("transactions").select("*").eq("userId", user.id);
 
       if (transactionsError) throw transactionsError;
 
       if (transactionsData) {
-        const expenses = transactionsData.filter(
-          (t) => t.type === "Expense"
-        );
-        const income = transactionsData.filter(
-          (t) => t.type === "Income"
-        );
+        const expenses = transactionsData.filter((t) => t.type === "Expense");
+        const income = transactionsData.filter((t) => t.type === "Income");
         setExpenses(expenses);
         setIncome(income);
       }
@@ -111,7 +107,7 @@ const App = () => {
   // Refetch when atoms change
   useEffect(() => {
     fetchUserData();
-  }, [cashAtom, bankAtom, expenses, income]);
+  }, [addExpenseAtom, addInComeAtom]);
 
   return (
     <div className="font-poppins">

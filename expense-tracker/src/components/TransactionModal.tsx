@@ -53,7 +53,13 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
         note: description,
       },
       user?.id
-    );
+    ).then(() => {
+      if (type === "Expense") {
+        addExpense({ category, amount, accountType, note: description });
+      } else {
+        addIncome({ category, amount, accountType, note: description });
+      }
+    });
 
     toast.success(`${type} added successfully`, {
       position: "bottom-right",
@@ -129,7 +135,9 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
 
             {/* Suggested Categories */}
             <div className="mt-4">
-              <p className="text-sm font-medium text-gray-700">Suggested Categories:</p>
+              <p className="text-sm font-medium text-gray-700">
+                Suggested Categories:
+              </p>
               <div className="flex flex-wrap gap-2 mt-2">
                 {categories.map((cat) => (
                   <button

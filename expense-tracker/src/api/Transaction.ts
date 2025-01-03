@@ -62,3 +62,47 @@ export const addTransactionApi = async (data: Transaction, userId: string) => {
     throw error; // Rethrow the error to be handled by the caller
   }
 };
+
+export const transferBalance = async (userId: string,type:string,amount:number) => {
+  try {
+    // Fetch user balance
+    const { data: accountData, error: accountError } = await supabase
+      .from("balance")
+      .select("cash, bank")
+      .eq("userId", userId)
+      .single();
+
+    if (accountError) {
+      console.error("Error fetching user balance:", accountError);
+      throw accountError;
+    }
+
+    if (!accountData) {
+      throw new Error("Account data not found");
+    }
+
+    // Calculate new balance
+    let updatedBalance;
+    if (type === "bankToCash") {
+      updatedBalance = { cash: accountData.cash + amount, bank: accountData.bank - amount };
+    } else {
+      updatedBalance = { cash: accountData.cash - amount, bank: accountData.bank + amount };
+    }
+
+    // Update user balance
+    const { data: balanceResponse, error: balanceError } = await supabase
+      .from("balance")
+      .update(updatedBalance)
+      .eq("userId", userId);
+
+    if (balanceError) {
+      console.error("Error updating user balance:", balanceError);
+      throw balanceError;
+    }
+
+    return balanceResponse;
+  } catch (error) {
+    console.error("Error in transferBalance:", error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};

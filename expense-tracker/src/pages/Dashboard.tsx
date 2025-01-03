@@ -3,6 +3,7 @@ import Tabs from "../components/Tabs";
 import TransactionLogs from "../components/Transactions";
 import Balance from "../components/Balance";
 import useDashboard from "./useDashboard";
+import TransferModal from "../components/TranserModal";
 
 function Dashboard() {
   const {
@@ -13,6 +14,8 @@ function Dashboard() {
     setIsExpenseModalOpen,
     setIsIncomeActivityLogModalOpen,
     setIsIncomeModalOpen,
+    setIsTransferModalOpen,
+    isTransferModalOpen,
     isExpenseModalOpen,
     isIncomeModalOpen,
     expensesData,
@@ -35,6 +38,7 @@ function Dashboard() {
         setIsIncomeModalOpen={setIsIncomeModalOpen}
         setIsActivityLogModalOpen={setIsExpenseActivityLogModalOpen}
         setIsIncomeActivityLogModalOpen={setIsIncomeActivityLogModalOpen}
+        setIsTransferModalOpen={setIsTransferModalOpen}
       />
 
       <TransactionModal
@@ -59,6 +63,11 @@ function Dashboard() {
         closeModal={() => setIsIncomeActivityLogModalOpen(false)}
         isOpen={isIncomeActityLogModal}
         data={incomeData}
+      />
+
+      <TransferModal
+        isOpen={isTransferModalOpen}
+        onClose={() => setIsTransferModalOpen(false)}
       />
     </div>
   );

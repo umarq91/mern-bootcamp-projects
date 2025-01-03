@@ -27,7 +27,6 @@ export const addExpenseAtom = atom(
   (get, set, payload: TransactionPaload) => {
     const { category, amount, accountType, note } = payload;
     const expense = { category, amount, accountType, note };
-
     set(expensesAtom, (prev) => [...prev, expense]);
 
     if (accountType === "Cash") {

@@ -6,6 +6,7 @@ import { bankAccountAtom, cashAccountAtom } from "../jotai/store";
 import { transferBalance } from "../api/Transaction";
 import { useClerk } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
+import { useUserData } from "../context/UserContext";
 
 type Props = {
   isOpen: boolean;
@@ -21,6 +22,7 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
   const [cashAmount, setCashAmount] = useAtom(cashAccountAtom);
   const [bankAmount, setBankAmount] = useAtom(bankAccountAtom);
   const { user } = useClerk();
+  const {fetchUserData} = useUserData();
 
   const handleSubmit = async () => {
     if (transferType === "bankToCash") {
@@ -29,6 +31,7 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
         return;
       } else {
         await transferBalance(user?.id!, "bankToCash", Number(amount));
+        fetchUserData();
         toast.success("Transfer successful", { position: "top-center" });
       }
     }
@@ -39,6 +42,7 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
         return;
       } else {
         await transferBalance(user?.id!, "CashToBank", Number(amount));
+        fetchUserData();
         toast.success("Transfer successful", { position: "top-center" });
       }
     }

@@ -1,4 +1,13 @@
+import { useUser } from "@clerk/clerk-react";
+import { useAtom } from "jotai";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import {
+  bankAccountAtom,
+  cashAccountAtom,
+  expensesAtom,
+  incomeAtom,
+} from "../jotai/store";
+import { supabase } from "../supabase";
 
 type Transaction = {
   category: string;
@@ -8,25 +17,29 @@ type Transaction = {
 };
 
 type UserDataContextType = {
-  cash: number;
-  bank: number;
-  expenses: Transaction[];
-  income: Transaction[];
-  addExpense: (payload: Transaction) => void;
-  addIncome: (payload: Transaction) => void;
+  //   cash: number;
+  //   bank: number;
+  //   expenses: Transaction[];
+  //   income: Transaction[];
+
   fetchUserData: () => Promise<void>;
 };
 
-const UserDataContext = createContext<UserDataContextType | undefined>(undefined);
-
-export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cash, setCash] = useState(0);
-  const [bank, setBank] = useState(0);
-  const [expenses, setExpenses] = useState<Transaction[]>([]);
-  const [income, setIncome] = useState<Transaction[]>([]);
+const UserDataContext = createContext<UserDataContextType | undefined>(
+  undefined
+);
+// TODO : rplace everything in project with this context value
+export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user, isSignedIn } = useUser();
+  const [cashAtom, setCashAmount] = useAtom(cashAccountAtom);
+  const [bankAtom, setBankAmount] = useAtom(bankAccountAtom);
+  const [expenses, setExpenses] = useAtom(expensesAtom);
+  const [income, setIncome] = useAtom(incomeAtom);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserData = async () => {
-    console.log("Called");
     try {
       if (!user?.id) return;
 
@@ -64,37 +77,13 @@ export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  const addExpense = (payload: Transaction) => {
-    setExpenses((prev) => [...prev, payload]);
-    if (payload.accountType === "Cash") {
-      setCash((prev) => prev - payload.amount);
-    } else {
-      setBank((prev) => prev - payload.amount);
-    }
-  };
-
-  const addIncome = (payload: Transaction) => {
-    setIncome((prev) => [...prev, payload]);
-    if (payload.accountType === "Cash") {
-      setCash((prev) => prev + payload.amount);
-    } else {
-      setBank((prev) => prev + payload.amount);
-    }
-  };
-
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [user]);
 
   return (
     <UserDataContext.Provider
       value={{
-        cash,
-        bank,
-        expenses,
-        income,
-        addExpense,
-        addIncome,
         fetchUserData,
       }}
     >

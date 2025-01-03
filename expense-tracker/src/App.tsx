@@ -107,7 +107,7 @@ const App = () => {
   // Refetch when atoms change
   useEffect(() => {
     fetchUserData();
-  }, [addExpenseAtom, addInComeAtom]);
+  }, [cashAtom, incomeAtom]);
 
   return (
     <div className="font-poppins">

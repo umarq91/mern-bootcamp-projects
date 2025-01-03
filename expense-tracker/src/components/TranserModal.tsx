@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { bankAccountAtom, cashAccountAtom } from "../jotai/store";
 import { transferBalance } from "../api/Transaction";
 import { useClerk } from "@clerk/clerk-react";
+import { toast } from "react-toastify";
 
 type Props = {
   isOpen: boolean;
@@ -27,7 +28,8 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
         alert("Insufficient balance");
         return;
       } else {
-        transferBalance("bankToCash", user?.id!, Number(amount));
+        await transferBalance(user?.id!, "bankToCash", Number(amount));
+        toast.success("Transfer successful", { position: "top-center" });
       }
     }
 
@@ -36,7 +38,8 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
         alert("Insufficient balance");
         return;
       } else {
-        transferBalance("CashToBank", user?.id!, Number(amount));
+        await transferBalance(user?.id!, "CashToBank", Number(amount));
+        toast.success("Transfer successful", { position: "top-center" });
       }
     }
     onClose();

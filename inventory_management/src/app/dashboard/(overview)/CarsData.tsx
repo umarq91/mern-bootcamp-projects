@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { supabase } from "@/supabase/client";
+import { useState } from "react";
 import Cards from "@/components/card";
 
 interface CarData {
@@ -19,34 +18,11 @@ interface CarData {
   image: string;
 }
 
-function CarsData() {
-  const [cars, setCars] = useState<CarData[]>([]);
-  const [filteredCars, setFilteredCars] = useState<CarData[]>([]);
+function CarsData({ data }: { data: CarData[] }) {
+  const [cars] = useState<CarData[]>(data);
+  const [filteredCars, setFilteredCars] = useState<CarData[]>(cars);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data, error } = await supabase.from("cars").select("*");
-
-        if (error) {
-          setError(error.message);
-        } else {
-          setCars(data || []);
-          setFilteredCars(data || []);
-        }
-      } catch (err) {
-        setError("Failed to fetch car data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
@@ -61,9 +37,7 @@ function CarsData() {
   };
 
   const filterCars = (query: string, status: string) => {
-    let filtered = cars.filter((car) =>
-      car.name.toLowerCase().includes(query)
-    );
+    let filtered = cars.filter((car) => car.name.toLowerCase().includes(query));
 
     if (status !== "all") {
       filtered = filtered.filter((car) => car.status.toLowerCase() === status);
@@ -71,20 +45,6 @@ function CarsData() {
 
     setFilteredCars(filtered);
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center mt-10">
-        <div className="text-xl font-semibold text-gray-600 animate-pulse">
-          Loading...
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="text-center mt-10 text-red-500">Error: {error}</div>;
-  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">

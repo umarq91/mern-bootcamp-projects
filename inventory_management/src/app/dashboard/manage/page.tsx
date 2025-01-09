@@ -46,6 +46,8 @@ export default async function Page({
     //     <Pagination totalPages={totalPages} />
     //   </div>
     // </div>
-
+    <div>
+      poker
+    </div>
   );
 }

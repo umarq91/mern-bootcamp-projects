@@ -6,7 +6,7 @@ type Props = {
   setIsIncomeModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsActivityLogModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsIncomeActivityLogModalOpen: React.Dispatch<
-    React.SetStateAction<boolean>
+    React.SetStateAction<boolean>  
   >;
   setIsTransferModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -62,10 +62,7 @@ function Tabs({
         </div>
       </Tab>
 
-      <Tab
-        onClick={() => setIsTransferModalOpen(true)}
-        className="bg-blue-300"
-      >
+      <Tab onClick={() => setIsTransferModalOpen(true)} className="bg-blue-300">
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center justify-center space-y-2 hover:shadow-lg transition duration-200">
           <span className="text-indigo-600 text-3xl font-bold">📋</span>
           <p className="text-lg font-medium text-gray-700">Transfer</p>

@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { fetchFilteredCars } from "@/lib/data";
 import React from "react";
 import { DeleteInvoice, UpdateInvoice } from "./buttons";
+import { toast } from "sonner";
 
 interface CarData {
   id: string;
@@ -17,10 +18,6 @@ interface CarData {
   soldon?: string;
   image: string;
 }
-
-// interface CardsProps {
-//   data: CarData[];
-// }
 
 const Card: React.FC<{ car: CarData }> = ({ car }) => {
   return (
@@ -76,21 +73,3 @@ const Card: React.FC<{ car: CarData }> = ({ car }) => {
   );
 };
 
-const InvoicesTable = async ({
-  query,
-  currentPage,
-}: {
-  query: string;
-  currentPage: number;
-}) => {
-  const data = await fetchFilteredCars(query, currentPage);
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {data.map((car) => (
-        <Card key={car.id} car={car} />
-      ))}
-    </div>
-  );
-};
-
-export default InvoicesTable;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface CarData {
   id: string;
@@ -12,32 +12,36 @@ interface CarData {
   purchasePrice: number;
   sellPrice: number;
   soldon?: string;
-  image: string;
+  images: string;
 }
 
 interface CardsProps {
   data: CarData[];
 }
 
-const Card: React.FC<{ car: CarData }> = ({ car }) => {
+export const Card: React.FC<{ car: CarData }> = ({ car }) => {
   return (
     <div className="relative max-w-sm rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 duration-300">
       {/* Car Image */}
       <div className="relative">
-        <img className="w-full h-48 object-cover" 
-                    src={`${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.image}`}
+        <img
+          className="w-full h-48 object-cover"
+          // Todo : fix src according  to final
+          src={
+            car.images || `${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.images}`
+          }
+          alt={car.name}
+        />
 
-         alt={car.name} />
-        
         {/* Status Tag (Available or Sold) */}
         <span
           className={`absolute top-2 right-2 px-3 py-1 text-sm font-bold rounded ${
-            car.status === 'available'
-              ? 'bg-green-500 text-white'
-              : 'bg-red-500 text-white'
+            car.status === "available"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
           }`}
         >
-          {car.status === 'available' ? 'Available' : 'Sold'}
+          {car.status === "available" ? "Available" : "Sold"}
         </span>
       </div>
 
@@ -53,7 +57,7 @@ const Card: React.FC<{ car: CarData }> = ({ car }) => {
             <strong>Fault:</strong> {car.fault}
           </p>
           <p className="text-sm text-gray-500">
-            <strong>Used:</strong> {car.used ? 'Yes' : 'No'}
+            <strong>Used:</strong> {car.used ? "Yes" : "No"}
           </p>
         </div>
       </div>

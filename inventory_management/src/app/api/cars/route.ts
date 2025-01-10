@@ -1,8 +1,8 @@
-import { supabase } from '@/supabase/client';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { supabase } from "@/supabase/client";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 // Define a Zod schema for the car upload form data
 const carSchema = z.object({
@@ -22,7 +22,7 @@ const carSchema = z.object({
     .string()
     .min(1, { message: "Sell price is required" })
     .transform((val) => parseFloat(val)),
-  used: z.string().transform((val) => val === 'true'),
+  used: z.string().transform((val) => val === "true"),
   status: z.string().min(1, { message: "Status is required" }),
   image: z.any(),
 });
@@ -33,16 +33,16 @@ export async function POST(request: Request) {
 
     // Convert formData to a plain object for Zod parsing
     const carData = {
-      name: formData.get('name') as string,
-      model: formData.get('model') as string,
-      year: formData.get('year') as string,
-      description: formData.get('description') as string,
-      fault: formData.get('fault') as string,
-      purchasePrice: formData.get('purchasePrice') as string,
-      sellPrice: formData.get('sellPrice') as string,
-      used: formData.get('used') as string,
-      status: formData.get('status') as string,
-      image: formData.get('image'),
+      name: formData.get("name") as string,
+      model: formData.get("model") as string,
+      year: formData.get("year") as string,
+      description: formData.get("description") as string,
+      fault: formData.get("fault") as string,
+      purchasePrice: formData.get("purchasePrice") as string,
+      sellPrice: formData.get("sellPrice") as string,
+      used: formData.get("used") as string,
+      status: formData.get("status") as string,
+      image: formData.get("image"),
     };
 
     // Validate and parse data using Zod
@@ -50,50 +50,74 @@ export async function POST(request: Request) {
 
     if (!parsedData.success) {
       const errors = parsedData.error.format();
-      console.log(errors)
-      return NextResponse.json({ type: 'error', message: 'Validation failed', errors });
+      console.log(errors);
+      return NextResponse.json({
+        type: "error",
+        message: "Validation failed",
+        errors,
+      });
     }
 
-    const { name, model, year, description, fault, purchasePrice, sellPrice, used, status, image } = parsedData.data;
+    const {
+      name,
+      model,
+      year,
+      description,
+      fault,
+      purchasePrice,
+      sellPrice,
+      used,
+      status,
+      image,
+    } = parsedData.data;
 
     // Upload image to Supabase Storage
     const fileName = `${Date.now()}-${(image as File).name}`;
 
     const { data: imageData, error: imageError } = await supabase.storage
-      .from('cars')
+      .from("cars")
       .upload(fileName, image as File, {
-        cacheControl: '3600',
+        cacheControl: "3600",
         upsert: false,
       });
 
     if (imageError) {
-      return NextResponse.json({ type: 'error', message: 'Failed to upload image' });
+      return NextResponse.json({
+        type: "error",
+        message: "Failed to upload image",
+        imageError,
+      });
     }
 
     // Insert car data into Supabase
-    const { error: carError } = await supabase
-      .from('cars')
-      .insert({
-        name,
-        model,
-        year,
-        description,
-        fault,
-        purchasePrice,
-        sellPrice,
-        used,
-        status,
-        image: imageData?.path,
-      });
+    const { error: carError } = await supabase.from("cars").insert({
+      name,
+      model,
+      year,
+      description,
+      fault,
+      purchasePrice,
+      sellPrice,
+      used,
+      status,
+      image: imageData?.path,
+    });
 
     if (carError) {
-      return NextResponse.json({ type: 'error', message: 'Failed to create car' });
+      return NextResponse.json({
+        type: "error",
+        message: "Failed to create car",
+      });
     }
-    revalidatePath('/dashboard/manage');
-    return NextResponse.json({ type: 'success', message: 'Car uploaded successfully' });
-    
+    revalidatePath("/dashboard/manage");
+    return NextResponse.json({
+      type: "success",
+      message: "Car uploaded successfully",
+    });
   } catch (error) {
-    return NextResponse.json({ type: 'error', message: 'Failed to create car' });
+    return NextResponse.json({
+      type: "error",
+      message: "Failed to create car",
+    });
   }
-
 }

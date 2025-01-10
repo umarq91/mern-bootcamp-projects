@@ -15,7 +15,7 @@ interface CarData {
   purchasePrice: number;
   sellPrice: number;
   soldon?: string;
-  image: string;
+  images: string;
 }
 
 function CarsData({ data }: { data: CarData[] }) {
@@ -45,6 +45,7 @@ function CarsData({ data }: { data: CarData[] }) {
 
     setFilteredCars(filtered);
   };
+  console.log(data);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">

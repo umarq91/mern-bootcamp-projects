@@ -2,6 +2,7 @@ import React from "react";
 import { supabase } from "@/supabase/client";
 import CarsData from "./CarsData";
 
+const revalidate = 0;
 const Home = async () => {
   const { data, error } = await supabase.from("cars").select("*");
 

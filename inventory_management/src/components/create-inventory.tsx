@@ -94,6 +94,7 @@ const CarUploadForm = () => {
         method: "POST",
         body: formDataToSend,
       });
+console.log(response);
 
       const result = await response.json();
       if (result.type === "success") {

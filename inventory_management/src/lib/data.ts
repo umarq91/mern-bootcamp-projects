@@ -32,7 +32,6 @@ export async function fetchFilteredCars(query: string, currentPage: number) {
       .order("year", { ascending: false })
       // .or(`name.contains.${query}`)
       .range(offset, offset + ITEMS_PER_PAGE - 1);
-    console.log(data);
 
     if (error) {
       throw new Error(error.message);

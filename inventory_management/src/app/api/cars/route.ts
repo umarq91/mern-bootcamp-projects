@@ -96,8 +96,8 @@ export async function POST(request: Request) {
       year,
       description,
       fault,
-      purchasePrice,
-      sellPrice,
+      purchaseprice:purchasePrice,
+      sellprice:sellPrice,
       used,
       status,
       image: imageData?.path,
@@ -107,6 +107,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         type: "error",
         message: "Failed to create car",
+        carError
       });
     }
     revalidatePath("/dashboard/manage");
@@ -118,6 +119,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       type: "error",
       message: "Failed to create car",
+      error
     });
   }
 }

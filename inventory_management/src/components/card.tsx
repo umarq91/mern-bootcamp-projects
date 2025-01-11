@@ -1,19 +1,7 @@
+import { CarData } from "@/Types";
 import React from "react";
 
-interface CarData {
-  id: string;
-  name: string;
-  model: string;
-  year: number;
-  description: string;
-  fault: string;
-  used: boolean;
-  status: string;
-  purchasePrice: number;
-  sellPrice: number;
-  soldon?: string;
-  images: string;
-}
+
 
 interface CardsProps {
   data: CarData[];
@@ -28,7 +16,7 @@ export const Card: React.FC<{ car: CarData }> = ({ car }) => {
           className="w-full h-48 object-cover"
           // Todo : fix src according  to final
           src={
-            car.images || `${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.images}`
+            `${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.image}`
           }
           alt={car.name}
         />

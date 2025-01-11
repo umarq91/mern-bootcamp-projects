@@ -72,4 +72,3 @@ const Card: React.FC<{ car: CarData }> = ({ car }) => {
     </div>
   );
 };
-

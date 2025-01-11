@@ -1,5 +1,5 @@
 export interface CarData {
-  id: string;
+  id?: string;
   name: string;
   model: string;
   year: number;
@@ -7,10 +7,10 @@ export interface CarData {
   fault: string;
   used: boolean;
   status: string;
-  purchasePrice: number;
-  sellPrice: number;
+  purchaseprice: number;
+  sellprice: number;
   soldon?: string;
-  image: string;
+  image: string | null;
 }
 
 

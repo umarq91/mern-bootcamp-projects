@@ -1,16 +1,15 @@
 import { supabase } from "@/supabase/client";
 import { revalidatePath } from "next/cache";
 
-export async function deleteInvoice(invoiceId: string) {
+export async function deleteInvoice(carId: string) {
   try {
-    console.log(invoiceId,"invoiceId")
     const { data, error } = await supabase
       .from("cars")
       .delete()
-      .eq("id", invoiceId);
+      .eq("id", carId);
 
     if (error) {
-      throw new Error("Failed to delete invoice");
+      throw new Error("Failed to delete Car");
     }
     revalidatePath("/dashboard/manage");
     return data;

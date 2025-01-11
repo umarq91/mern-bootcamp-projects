@@ -1,23 +1,26 @@
+"use client"
+import { deleteInvoice } from "@/lib/inventory-crud";
 import { CarData } from "@/Types";
+import Link from "next/link";
 import React from "react";
-
-
+import { DeleteInvoice, UpdateInvoice } from "./buttons";
 
 interface CardsProps {
   data: CarData[];
+  edit?: boolean;
 }
 
-export const Card: React.FC<{ car: CarData }> = ({ car }) => {
+export const Card: React.FC<{ car: CarData; edit?: boolean }> = ({
+  car,
+  edit,
+}) => {
   return (
     <div className="relative max-w-sm rounded-lg overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 duration-300">
       {/* Car Image */}
       <div className="relative">
         <img
           className="w-full h-48 object-cover"
-          // Todo : fix src according  to final
-          src={
-            `${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.image}`
-          }
+          src={`${process.env.NEXT_PUBLIC_SUPABASE_IMG}${car.image}`}
           alt={car.name}
         />
 
@@ -48,12 +51,23 @@ export const Card: React.FC<{ car: CarData }> = ({ car }) => {
             <strong>Used:</strong> {car.used ? "Yes" : "No"}
           </p>
         </div>
+        {edit && (
+          <div className="flex gap-4 mt-4">
+            <UpdateInvoice id={car?.id}>
+
+            </UpdateInvoice>
+           
+            <DeleteInvoice id={car?.id}>
+         
+            </DeleteInvoice>
+          </div>
+        )}
       </div>
 
       {/* Sell Price */}
       <div className="px-6 py-4">
         <div className="text-lg font-semibold text-gray-800">
-          Sell Price: ${car.sellPrice}
+          Sell Price: ${car.sellprice}
         </div>
       </div>
     </div>

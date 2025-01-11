@@ -2,7 +2,7 @@ import { supabase } from "@/supabase/client";
 
 const ITEMS_PER_PAGE = 3;
 
-export async function fetchCarsPages(query: string) {
+export async function fetchCarsPages() {
   try {
     const { count, error } = await supabase
       .from("cars")

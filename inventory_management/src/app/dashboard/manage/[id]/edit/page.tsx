@@ -3,33 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { CarData } from '@/Types';
 
-interface FormData {
-  name: string;
-  model: string;
-  year: string;
-  description: string;
-  fault: string;
-  used: boolean;
-  purchasePrice: string;
-  sellPrice: string;
-  status: string;
-  soldon: string;
-  image: File | string | null;
-}
+
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const id = params.id;
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CarData>({
     name: '',
     model: '',
-    year: '',
+    year: 0,
     description: '',
     fault: '',
     used: false,
-    purchasePrice: '',
-    sellPrice: '',
+    purchaseprice: 0,
+    sellprice: 0,
     status: 'available',
     image: null,
     soldon: '',
@@ -60,7 +49,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     const { name, value, type } = target;
     const checked = target instanceof HTMLInputElement ? target.checked : undefined;
     const files = target instanceof HTMLInputElement ? target.files : undefined;
-    setFormData({
+    setFormData({?
       ...formData,
       [name]: type === 'checkbox' ? checked : name === 'image' ? files?.[0] : value,
     });
@@ -71,15 +60,15 @@ const Page = ({ params }: { params: { id: string } }) => {
     setUploading(true);
 
     // Prepare data for update
-    const updatedData:Partial<FormData> = {
+    const updatedData:Partial<CarData> = {
       name: formData.name,
       model: formData.model,
       year: formData.year,
       description: formData.description,
       fault: formData.fault,
       used: formData.used,
-      purchasePrice: formData.purchasePrice,
-      sellPrice: formData.sellPrice,
+      purchaseprice: formData.purchaseprice,
+      sellprice: formData.sellprice,
       status: formData.status,
       soldon: formData.status === 'sold' ? new Date().toISOString() : '',
     };
@@ -208,7 +197,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           <input
             type="number"
             name="purchasePrice"
-            value={formData.purchasePrice}
+            value={formData.purchaseprice}
             onChange={handleInputChange}
             className="mt-1 p-3 block w-full rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
             placeholder="Enter purchase price"
@@ -222,7 +211,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           <input
             type="number"
             name="sellPrice"
-            value={formData.sellPrice}
+            value={formData.sellprice}
             onChange={handleInputChange}
             className="mt-1 p-3 block w-full rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
             placeholder="Enter sell price"

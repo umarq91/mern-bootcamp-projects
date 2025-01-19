@@ -1,26 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cards from "@/components/card";
+import { useAtom } from "jotai";
+import { carAtom } from "@/store";
+import { useCars } from "@/CarContext";
+import { CarData } from "@/Types";
 
-interface CarData {
-  id: string;
-  name: string;
-  model: string;
-  year: number;
-  description: string;
-  fault: string;
-  used: boolean;
-  status: string;
-  purchasePrice: number;
-  sellPrice: number;
-  soldon?: string;
-  images: string;
-}
-
-function CarsData({ data }: { data: CarData[] }) {
-  const [cars] = useState<CarData[]>(data);
-  const [filteredCars, setFilteredCars] = useState<CarData[]>(cars);
+function CarsData() {
+  const [carsAtom,setCarsAtom]  = useAtom(carAtom)
+  const [cars] = useState(carsAtom);
+  const [filteredCars, setFilteredCars] = useState(cars);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
@@ -37,15 +27,15 @@ function CarsData({ data }: { data: CarData[] }) {
   };
 
   const filterCars = (query: string, status: string) => {
-    let filtered = cars.filter((car) => car.name.toLowerCase().includes(query));
+    let filtered = cars.filter((car:CarData) => car.name.toLowerCase().includes(query));
 
     if (status !== "all") {
-      filtered = filtered.filter((car) => car.status.toLowerCase() === status);
+      filtered = filtered.filter((car:CarData) => car.status.toLowerCase() === status);
     }
 
     setFilteredCars(filtered);
   };
-  console.log(data);
+console.log(cars);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -73,8 +63,8 @@ function CarsData({ data }: { data: CarData[] }) {
       </div>
 
       {/* Cars Listing */}
-      {filteredCars.length > 0 ? (
-        <Cards data={filteredCars} />
+      {filteredCars.length >  0 ? (
+        <Cards data={filteredCars as any} />
       ) : (
         <div className="text-center text-gray-500">No cars found.</div>
       )}

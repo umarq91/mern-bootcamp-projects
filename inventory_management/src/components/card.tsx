@@ -51,13 +51,13 @@ export const Card: React.FC<{ car: CarData; edit?: boolean }> = ({
             <strong>Used:</strong> {car.used ? "Yes" : "No"}
           </p>
         </div>
-        {edit && (
+        {edit && car &&  (
           <div className="flex gap-4 mt-4">
-            <UpdateInvoice id={car?.id}>
+            <UpdateInvoice id={car?.id!}>
 
             </UpdateInvoice>
            
-            <DeleteInvoice id={car?.id}>
+            <DeleteInvoice id={car?.id!}>
          
             </DeleteInvoice>
           </div>

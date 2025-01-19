@@ -4,10 +4,16 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/supabase/client";
 import { log } from "node:console";
 import { toast } from "sonner";
+import { useAtom } from "jotai";
+import { carAtom } from "@/store";
+import { CarData } from "@/Types";
+import { revalidatePath } from "next/cache";
 
 const CreateInvoiceModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cars, setCars] = useAtom(carAtom);
+  console.log(cars);
 
   const [formData, setFormData] = useState({
     car_id: null,
@@ -66,8 +72,6 @@ const CreateInvoiceModal = () => {
 
     // Insert data into Supabase
     try {
-      console.log(formData);
-
       const { error } = await supabase.from("invoices").insert([formData]);
       if (error) throw error;
 
@@ -90,7 +94,7 @@ const CreateInvoiceModal = () => {
       setIsOpen(false);
     } catch (error) {
       console.error("Error creating invoice");
-      toast.error("Error making an Invoice")
+      toast.error("Error making an Invoice");
     } finally {
       setLoading(false);
     }
@@ -112,25 +116,36 @@ const CreateInvoiceModal = () => {
               Create Invoice
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Car ID */}
               <div>
-                <label
-                  htmlFor="car_id"
-                  className="block text-gray-700 font-medium mb-1"
-                >
-                  Car ID *
-                </label>
-                <input
-                  id="car_id"
-                  type="number"
-                  name="car_id"
-                  placeholder="Enter Car ID"
-                  value={formData.car_id || ""}
-                  onChange={handleChange}
-                  className="border p-3 rounded w-full"
-                  required
-                />
+                {cars && (
+                  <div>
+                    <label
+                      htmlFor="car_id"
+                      className="block text-gray-700 font-medium mb-1"
+                    >
+                      Select Car *
+                    </label>
+                    <select
+                      id="car_id"
+                      name="car_id"
+                      value={formData.car_id || ""} // Set the selected value
+                      onChange={handleChange} // Handle change to update `formData`
+                      className="border p-3 rounded w-full"
+                      required
+                    >
+                      <option value="" disabled>
+                        Select a car
+                      </option>
+                      {cars.map((car: CarData) => (
+                        <option key={car.id} value={car.id}>
+                          {car.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
+
               {/* Buyer Name */}
               <div>
                 <label

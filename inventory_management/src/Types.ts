@@ -9,7 +9,7 @@ export interface CarData {
   status: string;
   purchaseprice: number;
   sellprice: number;
-  soldon?: string;
+  soldon?: Date;
   image: string | null;
 }
 

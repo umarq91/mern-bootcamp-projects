@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import SideNav from "@/components/sidenav";
 import { SessionProvider, useSession } from "next-auth/react";
 import { auth } from "@/auth";
+import { CarsContext, CarsProvider } from "@/CarContext";
+import CarsWrapper from "./Wrapper";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,12 +34,14 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-          <Toaster />
-        </body>
+        <CarsWrapper>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            {children}
+            <Toaster />
+          </body>
+        </CarsWrapper>
       </html>
     </SessionProvider>
   );

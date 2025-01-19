@@ -1,27 +1,25 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/supabase/client';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { CarData } from '@/Types';
-
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/supabase/client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { CarData } from "@/Types";
+import { revalidatePath } from "next/cache";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const id = params.id;
   const [formData, setFormData] = useState<CarData>({
-    name: '',
-    model: '',
+    name: "",
+    model: "",
     year: 0,
-    description: '',
-    fault: '',
+    description: "",
+    fault: "",
     used: false,
-    purchaseprice: 0,
     sellprice: 0,
-    status: 'available',
+    status: "available",
+    purchaseprice: 0,
     image: null,
-    soldon: '',
   });
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,9 +28,9 @@ const Page = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchCarData = async () => {
       const { data, error } = await supabase
-        .from('cars')
-        .select('*')
-        .eq('id', id)
+        .from("cars")
+        .select("*")
+        .eq("id", id)
         .single();
       if (error) {
         setError(error.message);
@@ -44,14 +42,23 @@ const Page = ({ params }: { params: { id: string } }) => {
     fetchCarData();
   }, [id]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const target = e?.target as
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement;
     const { name, value, type } = target;
-    const checked = target instanceof HTMLInputElement ? target.checked : undefined;
+    const checked =
+      target instanceof HTMLInputElement ? target.checked : undefined;
     const files = target instanceof HTMLInputElement ? target.files : undefined;
-    setFormData({?
+    setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : name === 'image' ? files?.[0] : value,
+      [name]:
+        type === "checkbox" ? checked : name === "image" ? files?.[0] : value,
     });
   };
 
@@ -60,7 +67,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     setUploading(true);
 
     // Prepare data for update
-    const updatedData:Partial<CarData> = {
+    const updatedData: Partial<CarData> = {
       name: formData.name,
       model: formData.model,
       year: formData.year,
@@ -70,35 +77,38 @@ const Page = ({ params }: { params: { id: string } }) => {
       purchaseprice: formData.purchaseprice,
       sellprice: formData.sellprice,
       status: formData.status,
-      soldon: formData.status === 'sold' ? new Date().toISOString() : '',
+      // soldon: formData.status === 'sold' ? new Date().toISOString() : '',
     };
 
     // Handle image upload if necessary
     if (formData?.image instanceof File) {
       const fileName = `${Date.now()}-${formData.image.name}`;
       const { data, error: uploadError } = await supabase.storage
-        .from('cars')
+        .from("cars")
         .upload(fileName, formData.image);
-  
+
       if (uploadError) {
         setUploading(false);
         setError(uploadError.message);
         return;
       }
-  
+
       // Update the image path in the database
       updatedData.image = data.path;
     }
     // Update car data
-    const { error } = await supabase.from('cars').update(updatedData).eq('id', id);
+    const { error } = await supabase
+      .from("cars")
+      .update(updatedData)
+      .eq("id", id);
 
     setUploading(false);
-    router.push('/dashboard/manage');
+    revalidatePath("/dashboard/manage");
 
     if (error) {
       setError(error.message);
     } else {
-      toast.success('Car updated successfully');
+      toast.success("Car updated successfully");
     }
   };
 
@@ -108,11 +118,18 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
-      <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Sell Your Car</h2>
+      <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">
+        Sell Your Car
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Car Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Car Name</label>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Car Name
+          </label>
           <input
             type="text"
             name="name"
@@ -126,7 +143,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Model */}
         <div>
-          <label htmlFor="model" className="block text-sm font-medium text-gray-700">Model</label>
+          <label
+            htmlFor="model"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Model
+          </label>
           <input
             type="text"
             name="model"
@@ -140,7 +162,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Year */}
         <div>
-          <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
+          <label
+            htmlFor="year"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Year
+          </label>
           <input
             type="number"
             name="year"
@@ -154,7 +181,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Description
+          </label>
           <textarea
             name="description"
             value={formData.description}
@@ -168,7 +200,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Fault */}
         <div>
-          <label htmlFor="fault" className="block text-sm font-medium text-gray-700">Fault</label>
+          <label
+            htmlFor="fault"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Fault
+          </label>
           <textarea
             name="fault"
             value={formData.fault}
@@ -181,7 +218,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Used */}
         <div className="flex items-center">
-          <label htmlFor="used" className="block text-sm font-medium text-gray-700">Used</label>
+          <label
+            htmlFor="used"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Used
+          </label>
           <input
             type="checkbox"
             name="used"
@@ -193,7 +235,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Purchase Price */}
         <div>
-          <label htmlFor="purchasePrice" className="block text-sm font-medium text-gray-700">Purchase Price</label>
+          <label
+            htmlFor="purchasePrice"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Purchase Price
+          </label>
           <input
             type="number"
             name="purchasePrice"
@@ -207,7 +254,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Sell Price */}
         <div>
-          <label htmlFor="sellPrice" className="block text-sm font-medium text-gray-700">Sell Price</label>
+          <label
+            htmlFor="sellPrice"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Sell Price
+          </label>
           <input
             type="number"
             name="sellPrice"
@@ -220,7 +272,12 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         {/* Status */}
         <div>
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Status
+          </label>
           <select
             name="status"
             value={formData.status}
@@ -247,7 +304,12 @@ const Page = ({ params }: { params: { id: string } }) => {
         )} */}
         {/* Image Upload */}
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700">Upload Image</label>
+          <label
+            htmlFor="image"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Upload Image
+          </label>
           <input
             type="file"
             name="image"
@@ -260,10 +322,12 @@ const Page = ({ params }: { params: { id: string } }) => {
         {/* Submit Button */}
         <button
           type="submit"
-          className={`w-full p-3 text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`w-full p-3 text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+            uploading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={uploading}
         >
-          {uploading ? 'Uploading...' : 'Submit'}
+          {uploading ? "Uploading..." : "Submit"}
         </button>
       </form>
     </div>

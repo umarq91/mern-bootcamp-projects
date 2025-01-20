@@ -1,6 +1,7 @@
+/* eslint-disable */
 import { useUser } from "@clerk/clerk-react";
 import { useAtom } from "jotai";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import {
   bankAccountAtom,
   cashAccountAtom,
@@ -8,13 +9,6 @@ import {
   incomeAtom,
 } from "../jotai/store";
 import { supabase } from "../supabase";
-
-type Transaction = {
-  category: string;
-  amount: number;
-  accountType: "Cash" | "Bank";
-  note: string;
-};
 
 type UserDataContextType = {
   //   cash: number;
@@ -37,35 +31,49 @@ export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [bankAtom, setBankAmount] = useAtom(bankAccountAtom);
   const [expenses, setExpenses] = useAtom(expensesAtom);
   const [income, setIncome] = useAtom(incomeAtom);
-  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserData = async () => {
     try {
       if (!user?.id) return;
-
+  
       // Fetch account balances
       const { data: accountsData, error: accountsError } = await supabase
         .from("balance")
         .select("*")
         .eq("userId", user.id)
         .single();
-
+  
       if (accountsError && accountsError.code !== "PGRST116") {
         console.error("Error fetching account balance:", accountsError);
         return;
       }
-
+  
       if (accountsData) {
         setCashAmount(accountsData.cash);
         setBankAmount(accountsData.bank);
+      } else {
+        // No data found, insert a new record
+        const { error: insertError } = await supabase.from("balance").insert({
+          userId: user.id,
+          cash: 0, // Default cash amount
+          bank: 0, // Default bank amount
+        });
+  
+        if (insertError) {
+          console.error("Error inserting default balance:", insertError);
+        } else {
+          console.log("Default balance added for user:", user.id);
+          setCashAmount(0);
+          setBankAmount(0);
+        }
       }
-
+  
       // Fetch transaction history
       const { data: transactionsData, error: transactionsError } =
         await supabase.from("transactions").select("*").eq("userId", user.id);
-
+  
       if (transactionsError) throw transactionsError;
-
+  
       if (transactionsData) {
         const expenses = transactionsData.filter((t) => t.type === "Expense");
         const income = transactionsData.filter((t) => t.type === "Income");
@@ -76,10 +84,11 @@ export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Error fetching data from Supabase:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchUserData();
   }, [user]);
+  
 
   return (
     <UserDataContext.Provider

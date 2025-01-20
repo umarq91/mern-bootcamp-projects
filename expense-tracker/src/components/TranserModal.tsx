@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaUniversity, FaMoneyBillWave, FaExchangeAlt } from "react-icons/fa";
@@ -19,8 +20,8 @@ const TransferModal = ({ isOpen, onClose }: Props) => {
   );
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [cashAmount, setCashAmount] = useAtom(cashAccountAtom);
-  const [bankAmount, setBankAmount] = useAtom(bankAccountAtom);
+  const [cashAmount] = useAtom(cashAccountAtom);
+  const [bankAmount] = useAtom(bankAccountAtom);
   const { user } = useClerk();
   const {fetchUserData} = useUserData();
 

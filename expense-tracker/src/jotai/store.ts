@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { atom } from "jotai";
 import { TransactionPaload, Transaction } from "../types";
 

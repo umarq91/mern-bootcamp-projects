@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import {
   addExpenseAtom,
   addInComeAtom,
-  bankAccountAtom,
-  cashAccountAtom,
   categoriesAtom,
 } from "../jotai/store";
 import { AccountType } from "../types";
@@ -29,21 +27,13 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
   const [categories] = useAtom(categoriesAtom);
   const [_, addExpense] = useAtom(addExpenseAtom);
   const [__, addIncome] = useAtom(addInComeAtom);
-  const [cashAmountATom, setCashAtom] = useAtom(cashAccountAtom);
-  const [bankAmountAtom, setBankAtom] = useAtom(bankAccountAtom);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (amount <= 0) return;
     if (!user || !user.id) return;
 
-    const transactionData = {
-      amount,
-      category,
-      type: accountType,
-      note: description,
-    };
-
+ 
     addTransactionApi(
       {
         amount,

@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   bankAccountAtom,
   cashAccountAtom,

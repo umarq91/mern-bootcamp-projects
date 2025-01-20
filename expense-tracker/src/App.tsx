@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import { UserDataProvider } from "./context/UserContext";

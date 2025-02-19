@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import React, { useState } from "react";
 import {
   addExpenseAtom,
-  addInComeAtom,
+  addIncomeAtom,
   categoriesAtom,
 } from "../jotai/store";
 import { AccountType } from "../types";
@@ -26,7 +26,7 @@ const TransactionModal = ({ isOpen, closeModal, type }: Props) => {
   const { user } = useUser();
   const [categories] = useAtom(categoriesAtom);
   const [_, addExpense] = useAtom(addExpenseAtom);
-  const [__, addIncome] = useAtom(addInComeAtom);
+  const [__, addIncome] = useAtom(addIncomeAtom);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

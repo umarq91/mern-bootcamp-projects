@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useUser } from "@clerk/clerk-react";
 import { useAtom } from "jotai";
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import {
   bankAccountAtom,
   cashAccountAtom,
@@ -11,94 +11,71 @@ import {
 import { supabase } from "../supabase";
 
 type UserDataContextType = {
-  //   cash: number;
-  //   bank: number;
-  //   expenses: Transaction[];
-  //   income: Transaction[];
-
   fetchUserData: () => Promise<void>;
 };
 
-const UserDataContext = createContext<UserDataContextType | undefined>(
-  undefined
-);
-// TODO : rplace everything in project with this context value
-export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { user, isSignedIn } = useUser();
-  const [cashAtom, setCashAmount] = useAtom(cashAccountAtom);
-  const [bankAtom, setBankAmount] = useAtom(bankAccountAtom);
-  const [expenses, setExpenses] = useAtom(expensesAtom);
-  const [income, setIncome] = useAtom(incomeAtom);
+const UserDataContext = createContext<UserDataContextType | undefined>(undefined);
+
+export const UserDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useUser();
+  const [, setCashAmount] = useAtom(cashAccountAtom);
+  const [, setBankAmount] = useAtom(bankAccountAtom);
+  const [, setExpenses] = useAtom(expensesAtom);
+  const [, setIncome] = useAtom(incomeAtom);
 
   const fetchUserData = async () => {
     try {
       if (!user?.id) return;
-  
-      // Fetch account balances
-      const { data: accountsData, error: accountsError } = await supabase
-        .from("balance")
-        .select("*")
-        .eq("userId", user.id)
-        .single();
-  
+
+      // Fetch balance and transactions in parallel
+      const [{ data: accountsData, error: accountsError }, { data: transactionsData, error: transactionsError }] =
+        await Promise.all([
+          supabase.from("balance").select("*").eq("userId", user.id).single(),
+          supabase.from("transactions").select("*").eq("userId", user.id),
+        ]);
+
+      // Handle account balance data
       if (accountsError && accountsError.code !== "PGRST116") {
-        console.error("Error fetching account balance:", accountsError);
-        return;
-      }
-  
-      if (accountsData) {
+        console.error("Error fetching account balance:", accountsError.message);
+      } else if (accountsData) {
         setCashAmount(accountsData.cash);
         setBankAmount(accountsData.bank);
       } else {
-        // No data found, insert a new record
+        // Insert default balance if not found
         const { error: insertError } = await supabase.from("balance").insert({
           userId: user.id,
-          cash: 0, // Default cash amount
-          bank: 0, // Default bank amount
+          cash: 0,
+          bank: 0,
         });
-  
+
         if (insertError) {
-          console.error("Error inserting default balance:", insertError);
+          console.error("Error inserting default balance:", insertError.message);
         } else {
           console.log("Default balance added for user:", user.id);
           setCashAmount(0);
           setBankAmount(0);
         }
       }
-  
-      // Fetch transaction history
-      const { data: transactionsData, error: transactionsError } =
-        await supabase.from("transactions").select("*").eq("userId", user.id);
-  
-      if (transactionsError) throw transactionsError;
-  
-      if (transactionsData) {
-        const expenses = transactionsData.filter((t) => t.type === "Expense");
-        const income = transactionsData.filter((t) => t.type === "Income");
-        setExpenses(expenses);
-        setIncome(income);
+
+      // Handle transactions data
+      if (transactionsError) {
+        console.error("Error fetching transactions:", transactionsError.message);
+      } else if (transactionsData) {
+        setExpenses(transactionsData.filter((t) => t.type === "Expense"));
+        setIncome(transactionsData.filter((t) => t.type === "Income"));
       }
     } catch (error) {
       console.error("Error fetching data from Supabase:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchUserData();
-  }, [user]);
-  
+  }, [user?.id]);
 
-  return (
-    <UserDataContext.Provider
-      value={{
-        fetchUserData,
-      }}
-    >
-      {children}
-    </UserDataContext.Provider>
-  );
+  const contextValue = useMemo(() => ({ fetchUserData }), []);
+
+  return <UserDataContext.Provider value={contextValue}>{children}</UserDataContext.Provider>;
 };
 
 export const useUserData = () => {
